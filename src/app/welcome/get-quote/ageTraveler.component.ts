@@ -135,7 +135,7 @@ import { TranslateService } from '@ngx-translate/core';
                   class="form-age-traveler"
                   style="
                   width: 162px;"
-                 *ngIf="fDialog.value.types['type-'+i] === 'spouse'"
+                 *ngIf="fDialog.value.types['type-'+i] === 'spouse' "
 
                 >
 
@@ -167,6 +167,150 @@ import { TranslateService } from '@ngx-translate/core';
                   ></mat-datepicker>
                 </mat-form-field>
                 <!-- End mat-form-field -->
+                <!-- Start mat-form-field -->
+                <mat-form-field
+                  class="form-age-traveler"
+                  style="
+                  width: 162px;"
+                 *ngIf="fDialog.value.types['type-'+i] === 'brother' "
+
+                >
+
+
+                  <!-- Input Date -->
+
+                  <input
+                    type="text"
+                    matInput
+                    [matDatepicker]="picker"
+                   placeholder="Birth Of Date"
+                    [ngModel]="dataList.dates['date-' + i]"
+                    name="date-{{ i }}"
+                    #ages="ngModel"
+                    [max]="maxDateKid"
+
+                    required
+                  />
+                  <!-- End Input Date -->
+
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker
+                    #picker
+                    [startAt]="dataList.dates['date-' + i]"
+                    startView="multi-year"
+                  ></mat-datepicker>
+                </mat-form-field>
+                <!-- Start mat-form-field -->
+                <mat-form-field
+                  class="form-age-traveler"
+                  style="
+                  width: 162px;"
+                 *ngIf="fDialog.value.types['type-'+i] === 'sister' "
+
+                >
+
+
+                  <!-- Input Date -->
+
+                  <input
+                    type="text"
+                    matInput
+                    [matDatepicker]="picker"
+                   placeholder="Birth Of Date"
+                    [ngModel]="dataList.dates['date-' + i]"
+                    name="date-{{ i }}"
+                    #ages="ngModel"
+                    [max]="maxDateKid"
+
+                    required
+                  />
+                  <!-- End Input Date -->
+
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker
+                    #picker
+                    [startAt]="dataList.dates['date-' + i]"
+                    startView="multi-year"
+                  ></mat-datepicker>
+                </mat-form-field>
+                <!-- Start mat-form-field -->
+                <mat-form-field
+                  class="form-age-traveler"
+                  style="
+                  width: 162px;"
+                 *ngIf="fDialog.value.types['type-'+i] === 'parent' "
+
+                >
+
+
+                  <!-- Input Date -->
+
+                  <input
+                    type="text"
+                    matInput
+                    [matDatepicker]="picker"
+                   placeholder="Birth Of Date"
+                    [ngModel]="dataList.dates['date-' + i]"
+                    name="date-{{ i }}"
+                    #ages="ngModel"
+                    [max]="maxDateKid"
+
+                    required
+                  />
+                  <!-- End Input Date -->
+
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker
+                    #picker
+                    [startAt]="dataList.dates['date-' + i]"
+                    startView="multi-year"
+                  ></mat-datepicker>
+                </mat-form-field>
+                <!-- Start mat-form-field -->
+                <mat-form-field
+                  class="form-age-traveler"
+                  style="
+                  width: 162px;"
+                 *ngIf="fDialog.value.types['type-'+i] === 'grandparents' "
+
+                >
+
+
+                  <!-- Input Date -->
+
+                  <input
+                    type="text"
+                    matInput
+                    [matDatepicker]="picker"
+                   placeholder="Birth Of Date"
+                    [ngModel]="dataList.dates['date-' + i]"
+                    name="date-{{ i }}"
+                    #ages="ngModel"
+                    [max]="maxDateKid"
+
+                    required
+                  />
+                  <!-- End Input Date -->
+
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker
+                    #picker
+                    [startAt]="dataList.dates['date-' + i]"
+                    startView="multi-year"
+                  ></mat-datepicker>
+                </mat-form-field>
 
 
                 <!-- End If Condition -->
@@ -348,7 +492,11 @@ export class AgeTravelerComponent implements OnInit {
   showBtn: boolean = true;
   types = [
     {value: 'spouse', viewValue: 'Spouse'},
-    {value: 'kid', viewValue: 'Kid'}
+    {value: 'kid', viewValue: 'Kid'},
+    {value: 'brother', viewValue: 'Brother'},
+    {value: 'sister', viewValue: 'Sister'},
+    {value: 'parent', viewValue: 'Parent'},
+    {value: 'grandparents', viewValue: 'Grandparents'},
   ];
   dataList = {
     dates: "",

@@ -64,7 +64,11 @@ export class InfoComponent implements OnInit, AfterViewInit {
   numOfTravelers = [];
   types  = [
     {value: 'spouse', viewValue: 'Spouse'},
-    {value: 'kid', viewValue: 'Kid'}
+    {value: 'kid', viewValue: 'Kid'},
+    {value: 'brother', viewValue: 'Brother'},
+    {value: 'sister', viewValue: 'Sister'},
+    {value: 'parent', viewValue: 'Parent'},
+    {value: 'grandparents', viewValue: 'Grandparents'},
 
   ];
   numberPattern = '^(\d|\w)+$';
@@ -162,8 +166,8 @@ export class InfoComponent implements OnInit, AfterViewInit {
               // link.href = '207.154.195.214/TravelWording.pdf';
               // link.download = 'file.pdf';
               // link.dispatchEvent(new MouseEvent('click'));
-              window.open('http://207.154.195.214/TravelWording_General_Conditions.pdf', '_blank');
-              this.downloadTerms('http://207.154.195.214/TravelWording_General_Conditions.pdf');
+              window.open('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf', '_blank');
+              this.downloadTerms('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf');
             });
 
 
