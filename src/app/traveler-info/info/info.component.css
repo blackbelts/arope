@@ -55,3 +55,7 @@ mat-radio-button {
     margin-right: 25px;
     margin-bottom: 5px;
 }
+
+.red {
+    color: red;
+}

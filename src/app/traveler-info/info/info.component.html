@@ -110,7 +110,7 @@
             <mat-grid-tile *ngIf="isEgyptian === false">
                 <mat-form-field appearance="outline" class='form-field'>
                     <mat-label> {{ 'results_info.enter_address' | translate }}</mat-label>
-                    <input matInput type="text" name="address" [ngModel]="data_info.address" pattern="[a-zA-Z ]*" #address="ngModel" required>
+                    <input matInput type="text" name="address" [ngModel]="data_info.address" pattern="[a-zA-Z0-9 ]*" #address="ngModel" required>
                     <mat-error *ngIf="address.hasError('pattern')">Address Must Be In <strong>English</strong></mat-error>
                 </mat-form-field>
             </mat-grid-tile>
@@ -119,7 +119,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline" class='form-field'>
                     <mat-label> {{ 'results_info.enter_address' | translate }}</mat-label>
-                    <input matInput type="text" name="address"  [ngModel]="data_info.address" pattern="[a-zA-Z ]*" #address="ngModel" required>
+                    <input matInput type="text" name="address"  [ngModel]="data_info.address" pattern="[a-zA-Z0-9 ]*" #address="ngModel" required>
                     <mat-error *ngIf="address.hasError('pattern')">Address Must Be In <strong>English</strong></mat-error>
                 </mat-form-field>
             </mat-grid-tile>
@@ -269,16 +269,16 @@
 
         </div>
 <p>
-    <mat-checkbox [ngModel]="data_info.confirm" #checkbox="ngModel" name="terms"  color="primary" required> {{ 'results_info.alert2' | translate }} <a href="http://207.154.195.214/TravelWording_General_Conditions.pdf" download target="_blank">{{ 'results_info.terms' | translate }}</a></mat-checkbox>
+    <mat-checkbox [ngModel]="data_info.confirm" #checkbox="ngModel" name="terms"  color="primary" required> <span class="red">{{ 'results_info.alert2' | translate }} </span> <a class="red" href="http://207.154.195.214/TravelWording_General_Conditions.pdf" download target="_blank">{{ 'results_info.terms' | translate }}</a></mat-checkbox>
 
 </p>
 <p>
 
-    <mat-checkbox [ngModel]="data_info.chk" #chk="ngModel" name="chk"  color="primary" required> {{ 'results_info.chk' | translate }}</mat-checkbox>
+    <mat-checkbox [ngModel]="data_info.chk" #chk="ngModel" name="chk"  color="primary" required> <span class="red"> {{ 'results_info.chk' | translate }}</span> </mat-checkbox>
 </p>
 <p>
 
-    <mat-checkbox [ngModel]="data_info.condition" #condition="ngModel" name="condition"  color="primary" required> {{ 'notes.condition' | translate }} <a href="http://207.154.195.214/دليل حماية المتعاملين في التأمين.pdf" target="_blank" rel="noopener noreferrer">{{ 'notes.guide'|translate }}</a></mat-checkbox>
+    <mat-checkbox [ngModel]="data_info.condition" #condition="ngModel" name="condition"  color="primary" required> <span class="red">{{ 'notes.condition' | translate }} <a style="color: red;" href="http://207.154.195.214/دليل حماية المتعاملين في التأمين.pdf" target="_blank" rel="noopener noreferrer">{{ 'notes.guide'|translate }}</a></span></mat-checkbox>
 </p>
         <br> <br>
         <!-- <p *ngIf="isFirstPolicy == false" style="color:red;">{{ 'results_info.firstPolicy' | translate }}</p> -->
