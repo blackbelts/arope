@@ -210,7 +210,8 @@
     "payment": {
         "title": "Choose a suitable payment method",
         "fawery": "Fawery",
-        "qnb": "QNB"
+        "qnb": "QNB",
+        "nbe": "NBE"
     }
 
 }

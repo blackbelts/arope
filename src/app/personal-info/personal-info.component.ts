@@ -264,7 +264,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   async onClickAfterSubmit(payment_method) {
     const total_price = localStorage.getItem('total_price');
 
-    await this.paymentService.qnpGetSession(total_price).subscribe(response => {
+    await this.paymentService.qnpGetSession(total_price,payment_method).subscribe(response => {
       console.log(response , 'session');
       const key1 =  'sesionID';
       const key2 =  'orderID';
