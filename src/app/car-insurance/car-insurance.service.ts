@@ -392,12 +392,11 @@ export class CarInsuranceService {
 
   sendPriceAndGetPrice(data) {
     this.uiService.loadingChangedStatus.next(true);
-     this.odoo.call_odoo_function('odoo', 'online', 'online', 'motor.api',
-    'get_price', data).subscribe(res => {
-       console.log(res);
-       this.loadPrice.next(res);
-       this.uiService.loadingChangedStatus.next(false);
-    }, error => console.log(error));
+    this.odoo.call_odoo_function('motor.api', 'get_price', data).subscribe(res => {
+      console.log(res);
+      this.loadPrice.next(res);
+      this.uiService.loadingChangedStatus.next(false);
+  }, error => console.log(error));
   }
 
   getTicketCar(data) {
@@ -406,7 +405,7 @@ export class CarInsuranceService {
         data
       }
     };
-    return this.odoo.call_odoo_function('odoo', 'online', 'online', 'ticket.api',
+    return this.odoo.call_odoo_function('ticket.api',
     'create_motor_ticket', dataList);
   }
 

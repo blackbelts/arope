@@ -127,7 +127,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
     const data = {paramlist: {filter: [],
       need: []}};
-    this.odoo.call_odoo_function('odoo', 'online', 'online',
+    this.odoo.call_odoo_function(
   'res.country', 'search_read', data ).subscribe(res => {
     this.countries = res;
     console.log(this.countries);
@@ -157,7 +157,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
         let headers = new HttpHeaders();
         headers = headers.set('Accept', 'application/pdf');
         console.log('personal==> ', data);
-        this.odoo.call_odoo_function('odoo', 'online', 'online',
+        this.odoo.call_odoo_function(
         'personal.front', 'create_policy', data ).subscribe(res => {
           console.log(res);
           this.uiService.loadResId.next(res[1]);

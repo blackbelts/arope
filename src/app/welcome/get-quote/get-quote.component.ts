@@ -91,7 +91,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
     }
     // get query params
     const data = {paramlist: { data: [] } };
-    this.odoo.call_odoo_function('odoo', 'online', 'online',
+    this.odoo.call_odoo_function(
     'travel.front', 'get_periods', data ).subscribe(res => {
       this.periods = res;
       console.log('periods', res);
@@ -298,7 +298,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       //   console.log(res);
       // });
 
-      this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
+      this.odoo.call_odoo_function('policy.travel',
       'get_group', data).subscribe(res => {
         const x = res.gross;
         this.uiService.loadPriceTotal.next( parseInt(x.toString(), 10) );
@@ -362,7 +362,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
 
   getAge(dateString) {
     const data = {paramlist: {age: [dateString]}};
-    this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
+    this.odoo.call_odoo_function('policy.travel',
     'calculate_age', data).subscribe(res => {
       const age = res[0];
       localStorage.setItem('age', age.toString());

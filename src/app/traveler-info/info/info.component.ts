@@ -145,9 +145,6 @@ export class InfoComponent implements OnInit, AfterViewInit {
 
 
         this.odoo.call_odoo_function(
-            'odoo',
-            'online',
-            'online',
             'travel.front',
             'create_policy',
             data
@@ -348,7 +345,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
       localStorage.setItem('formData', JSON.stringify(formData));
       const data = {paramlist: {data: {z: localStorage.getItem('zone'), d: [age],
         p_from: when, p_to: till}}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
+      this.odoo.call_odoo_function('policy.travel',
         'get_individual', data).subscribe(res => {
           const x = res.gross.toFixed(2);
           localStorage.setItem('total_price', parseInt(x.toString(), 10).toString());
@@ -423,7 +420,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
 
       }, key: 'travel'};
       localStorage.setItem('formData', JSON.stringify(formData));
-      this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
+      this.odoo.call_odoo_function('policy.travel',
       'get_family', data).subscribe(res => {
         const x = res.gross.toString();
         console.log(x);

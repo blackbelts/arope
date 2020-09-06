@@ -107,9 +107,6 @@ export class GetTicketComponent implements OnInit {
 
     this.odoo
       .call_odoo_function(
-        'odoo',
-        'online',
-        'online',
         'ticket.api',
         'create_ticket',
         data
@@ -129,9 +126,6 @@ export class GetTicketComponent implements OnInit {
     };
     this.odoo
       .call_odoo_function(
-        'odoo',
-        'online',
-        'online',
         'ticket.api',
         'create_medical_ticket',
         data

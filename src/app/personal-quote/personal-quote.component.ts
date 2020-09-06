@@ -20,7 +20,7 @@ export class PersonalQuoteComponent implements OnInit {
 
     if (this.lang === 'en') {
       const datas = {paramlist: {filter: [['cover_id', '=', this.filters.name]], need: []}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'cover.table', 'search_read', datas ).subscribe(res => {
         for ( let i = 0; i < res.length; i++) {
           if ( res.cover_id === false) {
@@ -31,7 +31,7 @@ export class PersonalQuoteComponent implements OnInit {
       });
     } else {
       const ardata = {paramlist: {filter: [['ar_cover_id', '=', this.filters.name]], need: ['ar_cover_id', 'ar_desc']}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
     'cover.table', 'search_read', ardata ).subscribe(res => {
         this.covers = res;
         // for ( let i = 0; i < this.covers.length; i++) {

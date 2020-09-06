@@ -55,20 +55,20 @@ export class PersonalAccidentComponent implements OnInit {
       need: []}};
     const optionalData = {paramlist: {filter: [['basic', '=', false]],
     need: []}};
-    this.odoo.call_odoo_function('odoo', 'online', 'online',
+    this.odoo.call_odoo_function(
     'job.table', 'search_read', data ).subscribe(res => {
       this.jobs = res;
       console.log('jobs', res);
     });
     if (this.lang === 'en') {
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'cover.table', 'search_read', basicData ).subscribe(res => {
         console.log(res);
         this.basicCovers = res;
         this.isShow = true;
 
       });
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'cover.table', 'search_read', optionalData ).subscribe(res => {
         console.log(res);
         this.optionalCovers = res;
@@ -79,7 +79,7 @@ export class PersonalAccidentComponent implements OnInit {
       need: ['ar_cover_id']}};
       const arOptionalData = {paramlist: {filter: [['basic', '=', false]],
       need: ['ar_cover_id']}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'cover.table', 'search_read', arBasicData ).subscribe(res => {
         for (const x in res) {
           res[x].cover_id = res[x].ar_cover_id;
@@ -90,7 +90,7 @@ export class PersonalAccidentComponent implements OnInit {
 
       });
 
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'cover.table', 'search_read', arOptionalData ).subscribe(res => {
         for (const x in res) {
           res[x].cover_id = res[x].ar_cover_id;
@@ -133,7 +133,7 @@ export class PersonalAccidentComponent implements OnInit {
     localStorage.setItem('date', this.convertDate(form.value.indAge));
     const data  = {paramlist: {data: {j: form.value.job,
       sum_insured: form.value.rate, cover: covers}}};
-    this.odoo.call_odoo_function('odoo', 'online', 'online',
+    this.odoo.call_odoo_function(
   'policy.personal', 'get_qouate', data ).subscribe(res => {
     console.log(res);
     localStorage.setItem('total_price', parseInt(res).toString());

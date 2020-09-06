@@ -91,9 +91,6 @@ export class PaymentComponent implements OnInit, AfterViewChecked {
       const data = { paramlist: formData };
       this.odoo
         .call_odoo_function(
-          "odoo",
-          "online",
-          "online",
           "travel.front",
           "create_policy",
           data

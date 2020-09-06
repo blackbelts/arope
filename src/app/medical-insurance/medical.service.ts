@@ -64,7 +64,7 @@ export class MedicalService {
             }
           };
         console.log('datelist', dataList);
-        return this.odooService.call_odoo_function('odoo', 'online', 'online', 'medical.api',
+        return this.odooService.call_odoo_function('medical.api',
           'get_price', dataList).subscribe(res => {
             console.log(res);
             this.loadMedicalInfo.next(res);

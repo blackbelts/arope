@@ -52,7 +52,7 @@ export class WelcomeService {
 
     this.uiService.loadingChangedStatus.next(true);
 
-    this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
+    this.odoo.call_odoo_function('policy.travel',
      fun, data).subscribe(res => {
         const x = res.gross.toFixed(2);
        

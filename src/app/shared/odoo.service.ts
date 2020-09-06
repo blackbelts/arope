@@ -7,12 +7,11 @@ import { Observable } from 'rxjs';
 export class OdooService {
 
   constructor(private http: HttpClient, private uiService: UIService) { }
-  call_odoo_function(dbName, user, pass, modelName, functionName, data): Observable<any>  {
+  call_odoo_function(modelName, functionName, data): Observable<any>  {
     data = JSON.stringify(data);
     const nwData = {paramlist: data};
     const port = 8069;
-    const odooUrl = 'http://3.249.109.211:4000/call_method' + '/' + port + '/' + dbName + '/' +
-     user + '/' + pass + '/' + modelName + '/' + functionName;
+    const odooUrl = 'http://3.249.109.211:4000/call_method' + '/' + modelName + '/' + functionName;
     console.log('ay kalam 5');
     return this.http.post(odooUrl, nwData);
   }

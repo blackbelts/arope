@@ -158,7 +158,7 @@ export class TravelerService {
     if (this.lang === 'en') {
       const data = {paramlist: {filter: [],
         need: []}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'travel.benefits', 'search_read', data).subscribe(res => {
         for (const x in res) {
           const cover = res[x].cover;
@@ -177,7 +177,7 @@ export class TravelerService {
     } else {
       const data = {paramlist: {filter: [],
         need: ['ar_cover', 'ar_limit']}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'travel.benefits', 'search_read', data).subscribe(res => {
 
         for (const x in res) {
@@ -207,7 +207,7 @@ export class TravelerService {
     if (this.lang === 'en') {
       const data = {paramlist: {filter: [],
         need: []}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'travel.excess', 'search_read', data).subscribe(res => {
         this.loadResObjExcess.next(res);
         this.uiService.loadingChangedStatus.next(false);
@@ -215,7 +215,7 @@ export class TravelerService {
     } else {
       const data = {paramlist: {filter: [],
         need: ['ar_rule', 'amount']}};
-      this.odoo.call_odoo_function('odoo', 'online', 'online',
+      this.odoo.call_odoo_function(
       'travel.excess', 'search_read', data).subscribe(res => {
         for (const x of res) {
           x.rule = x.ar_rule;

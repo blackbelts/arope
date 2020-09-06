@@ -63,9 +63,6 @@ export class PriceCardPaymentComponent implements OnInit {
 
 
         this.odoo.call_odoo_function(
-            'odoo',
-            'online',
-            'online',
             'travel.front',
             'create_policy',
             data
@@ -88,7 +85,7 @@ export class PriceCardPaymentComponent implements OnInit {
           let headers = new HttpHeaders();
           headers = headers.set('Accept', 'application/pdf');
           console.log('personal==> ', data);
-          this.odoo.call_odoo_function('odoo', 'online', 'online',
+          this.odoo.call_odoo_function(
           'personal.front', 'create_policy', data ).subscribe(res => {
             console.log(res);
             this.http.get('http://3.249.109.211:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
