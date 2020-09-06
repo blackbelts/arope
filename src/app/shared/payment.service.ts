@@ -9,8 +9,8 @@ export class PaymentService {
 
   constructor(private http: HttpClient, private odoo: OdooService) { }
 
-   qnpGetSession(amount) {
-       return this.http.get(`http://3.249.109.211:4000/get_session/${amount}`);
+  qnpGetSession(amount, paymentType) {
+    return this.http.get(`http://3.249.109.211:4000/get_session/${amount}/${paymentType}`);
 
   }
 

@@ -40,7 +40,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   ]
 })
 export class InfoComponent implements OnInit, AfterViewInit {
-
+  isLoading = false;
   constructor(
     private setting: SiteSettingsService,
     private odoo: OdooService,
@@ -109,8 +109,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
     chk: false,
     condition: false
   };
-
-
+  payment_method
   matcher = new MyErrorStateMatcher();
   @Output() changeStatus = new EventEmitter();
   qnbConfig;
@@ -236,49 +235,55 @@ export class InfoComponent implements OnInit, AfterViewInit {
     if (data_traveler) {
       this.data_info = this.travelerService.getInfoTraveller();
     }
-
+    let merchant = ""
+    if (this.payment_method == "nbe") {
+      merchant = "TESTNBETEST"
+    }
+    else if (this.payment_method == "qnb") {
+      merchant = "TESTQNBAATEST001"
+    }
+    console.log(merchant)
     this.national = this.data_info.national;
     // qnp config
     this.qnbConfig = {
-      merchant: 'TESTQNBAATEST001',
+      merchant: merchant,
       session: {
         id: sessionIDLocalStorage
       },
       order: {
-          amount() {
-              // Dynamic calculation of amount
-              return Number(total_price);
-          },
-          currency: 'EGP',
-          description: this.data_info.package
+        amount() {
+          // Dynamic calculation of amount
+          return Number(total_price);
+        },
+        currency: 'EGP',
+        description: this.data_info.package
 
       },
-        interaction: {
-          // operation: 'AUTHORIZE',
-          merchant      : {
-            name   : 'شركة أروب مصر',
-            address: {
-              line1: '30, Msadak, Ad Doqi Giza 12411'
-            },
-            phone  : '02 33323299',
-
-            logo   : 'https://aropeegypt.com.eg/Property/wp-content/uploads/2019/10/Logoz-3.jpg'
+      interaction: {
+        /* operation: 'PURCHASE', */
+        merchant: {
+          name: 'شركة أروب مصر',
+          address: {
+            line1: '30, Msadak, Ad Doqi Giza 12411'
           },
-          locale        : 'ar_EG',
-          theme         : 'default',
-          displayControl: {
-              billingAddress  : 'HIDE',
-              customerEmail   : 'HIDE',
-              orderSummary    : 'HIDE',
-              shipping        : 'HIDE'
-            }
-          }
-  };
+          phone: '02 33323299',
+
+          logo: 'https://aropeegypt.com.eg/Property/wp-content/uploads/2019/10/Logoz-3.jpg'
+        },
+        locale: 'ar_EG',
+        theme: 'default',
+        displayControl: {
+          billingAddress: 'HIDE',
+          customerEmail: 'HIDE',
+          orderSummary: 'HIDE',
+          shipping: 'HIDE'
+        }
+      }
+    };
 
 
     Checkout.configure(this.qnbConfig);
   }
-
 
 
   get lang() { return localStorage.getItem('lang'); }
@@ -436,24 +441,69 @@ export class InfoComponent implements OnInit, AfterViewInit {
     this.isValidFormSubmitted = true;
   }
 
+  paymentChange(event) {
+    if (event.value !== "fawry") {
+      this.isLoading = true
+      let paymentScript = document.querySelector("#payment");
+      let iframe = document.querySelector("iframe");
+      if (paymentScript != null)
+        paymentScript.remove();
+      if (iframe != null)
+        iframe.remove()
+      const script = document.createElement("script");
+      script.id = "payment"
+      if (event.value === 'qnb') {
+        script.src = 'https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js';
+      } else if (event.value === 'nbe') {
+        script.src = 'https://nbe.gateway.mastercard.com/checkout/version/57/checkout.js';
+      }
+      script.setAttribute("data-cancel","cancelCallback")
+      script.setAttribute("data-error","errorCallback")
+      script.setAttribute("data-complete","completeCallback")
+      script.type = 'text/javascript';
+      document.head.appendChild(script);
+      script.onload = (event) => {
+        this.isLoading = false;
+        //this.initQnpConfig();
+        console.log("loadddddddddddddddd")
+        console.log(event)
 
+      }
+
+      // Set script src depend on condition
+
+      /*  script.setAttribute("data-cancel", "cancel")
+       script.setAttribute("data-beforeRedirect", "cancel")
+       script.setAttribute("data-afterRedirect", "cancel") */
+      // Append
+
+    }
+
+  }
   async onClickAfterSubmit(payment_method) {
     const total_price = localStorage.getItem('total_price');
 
-    await this.paymentService.qnpGetSession(total_price).subscribe(response => {
-      console.log(response , 'session');
-      const key1 =  'sesionID';
-      const key2 =  'orderID';
-      const dataSaved = {sesionID: response[key1], orderID: response[key2]};
+    await this.paymentService.qnpGetSession(total_price, payment_method).subscribe(response => {
+      console.log(response, 'session');
+      const key1 = 'sesionID';
+      const key2 = 'orderID';
+      const dataSaved = { sesionID: response[key1], orderID: response[key2] };
       localStorage.setItem('__arope_order_details', JSON.stringify(dataSaved));
-
+      console.log("dfghjkl;'waesrdtfgyhjkl;sdfghjkl")
+      if (payment_method === 'qnb') {
+        this.initQnpConfig();
+        // console.log('data start', this.data_info);
+        Checkout.showLightbox();
+      } else if (payment_method === 'nbe') {
+        this.initQnpConfig();
+        // console.log('data start', this.data_info);
+        Checkout.showLightbox();
+      }
     });
+    this.payment_method = payment_method
+    console.log("dfghllllllllllllllllllllllllllllllllllllllllllll")
 
-    if (payment_method === 'qnp') {
-      this.initQnpConfig();
-      // console.log('data start', this.data_info);
-      Checkout.showLightbox();
-    } else if (payment_method === 'fawery') {
+    if (payment_method === 'fawry') {
       const returnData = this.faweyService.faweryConfig();
       console.log(returnData, 'return data');
       FawryPay.checkout((await returnData).charge_request, (await returnData).sucess_page_url, (await returnData).failer_page_url);
