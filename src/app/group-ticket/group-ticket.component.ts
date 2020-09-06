@@ -20,25 +20,25 @@ export class GroupTicketComponent implements OnInit {
     private validation: ValidationService,
     private routerActivated: ActivatedRoute
   ) {}
-  isHere:boolean = false;
+  isHere: boolean = false;
   dateOfBirth: string;
   job: number;
   sum_insured: number;
   @ViewChild("fInfo", { static: false }) customForm: NgForm;
   ngOnInit() {
-    this.routerActivated.paramMap.subscribe(paramMap=> {
-      if(paramMap.has('dateOfBirth') && paramMap.has('job') && paramMap.has('sum_insured')) {
+    this.routerActivated.paramMap.subscribe(paramMap => {
+      if (paramMap.has('dateOfBirth') && paramMap.has('job') && paramMap.has('sum_insured')) {
         this.isHere = true;
         this.dateOfBirth = paramMap.get('dateOfBirth');
         this.job = parseInt(paramMap.get('job'));
         this.sum_insured = parseInt(paramMap.get('sum_insured'));
       }
-    })
+    });
   }
   submitForm(form: NgForm) {
     const groups = JSON.parse(localStorage.getItem("groupMembers"));
     let obj;
-    if(this.isHere) { 
+    if (this.isHere) {
       obj = {
         type: "pa",
           job: form.value.job,
@@ -47,7 +47,7 @@ export class GroupTicketComponent implements OnInit {
           mail: form.value.emailAddress,
           sum_insured: this.sum_insured,
           date: this.dateOfBirth
-      }
+      };
     } else {
       obj = {
         group: groups,
@@ -55,7 +55,7 @@ export class GroupTicketComponent implements OnInit {
         name: form.value.name,
         phone: form.value.prefixNum + form.value.phoneNumber,
         mail: form.value.emailAddress
-      }
+      };
     }
 
     const data = {
@@ -68,9 +68,6 @@ export class GroupTicketComponent implements OnInit {
 
     this.odoo
       .call_odoo_function(
-        "odoo",
-        "online",
-        "online",
         "ticket.api",
         "create_ticket",
         data

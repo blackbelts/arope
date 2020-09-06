@@ -29,9 +29,6 @@ export class PaymentService {
     if (mode === 'traveler') {
 
         this.odoo.call_odoo_function(
-            'odoo',
-            'online',
-            'online',
             'travel.front',
             'create_policy',
             data
