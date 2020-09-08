@@ -48,6 +48,22 @@ export class GroupTicketComponent implements OnInit {
           sum_insured: this.sum_insured,
           date: this.dateOfBirth
       };
+      const data = {
+        paramlist: {
+          data: {
+            obj
+          }
+        }
+      };
+      this.odoo
+        .call_odoo_function(
+          "personal.front",
+          "create_personal_ticket",
+          data
+        )
+        .subscribe(res => {
+          this.router.navigate(["/thanks"]);
+        });
     } else {
       obj = {
         group: groups,
@@ -56,25 +72,25 @@ export class GroupTicketComponent implements OnInit {
         phone: form.value.prefixNum + form.value.phoneNumber,
         mail: form.value.emailAddress
       };
+      const data = {
+        paramlist: {
+          data: {
+            obj
+          }
+        }
+      };
+      this.odoo
+        .call_odoo_function(
+          "travel.front",
+          "create_travel_ticket",
+          data
+        )
+        .subscribe(res => {
+          this.router.navigate(["/thanks"]);
+        });
     }
 
-    const data = {
-      paramlist: {
-        data: {
-          obj
-        }
-      }
-    };
-
-    this.odoo
-      .call_odoo_function(
-        "ticket.api",
-        "create_ticket",
-        data
-      )
-      .subscribe(res => {
-        this.router.navigate(["/thanks"]);
-      });
+    
   }
   onResize(event) {
     console.log("yeah", event);

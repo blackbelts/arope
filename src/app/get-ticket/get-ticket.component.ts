@@ -31,7 +31,7 @@ export class GetTicketComponent implements OnInit {
       this.type = localStorage.getItem('medicalType');
       console.log(this.brandCar, this.product, this.price);
     });
-    
+
 
 
     this.breakpoint = window.innerWidth <= 700 ? 1 : 3;
@@ -54,7 +54,7 @@ export class GetTicketComponent implements OnInit {
         mail: form.value.emailAddress
       };
       this.getTicketMedicalIsurance(obj);
-    } else if (this.brandCar && this.product && this.price) {
+    } else if (this.brandCar && this.price) {
       console.log('HERE2');
       obj = {
         name: form.value.name,
@@ -62,7 +62,7 @@ export class GetTicketComponent implements OnInit {
         mail: form.value.emailAddress,
         price: this.price,
         brand: this.brandCar,
-        product: this.planTypeCar
+        // // product: this.planTypeCar
       };
 
       this.getTicketCar(obj);
@@ -107,8 +107,8 @@ export class GetTicketComponent implements OnInit {
 
     this.odoo
       .call_odoo_function(
-        'ticket.api',
-        'create_ticket',
+        'travel.front',
+        'create_travel_ticket',
         data
       )
       .subscribe(res => {
@@ -126,7 +126,7 @@ export class GetTicketComponent implements OnInit {
     };
     this.odoo
       .call_odoo_function(
-        'ticket.api',
+        'medical.api',
         'create_medical_ticket',
         data
       )

@@ -379,7 +379,7 @@ export class CarInsuranceService {
     // window.open(url);
   }
 
-  
+
 
   convertFromArrayToObject(dataList: string[]) {
     const obj = [];
@@ -405,7 +405,7 @@ export class CarInsuranceService {
         data
       }
     };
-    return this.odoo.call_odoo_function('ticket.api',
+    return this.odoo.call_odoo_function('motor.api',
     'create_motor_ticket', dataList);
   }
 
