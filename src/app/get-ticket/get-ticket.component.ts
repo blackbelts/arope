@@ -44,6 +44,7 @@ export class GetTicketComponent implements OnInit {
     this.isLoading = true;
     let obj;
     const groups = JSON.parse(localStorage.getItem('groupMembers'));
+    this.planType = localStorage.getItem('planType');
     if (this.planType) {
       console.log('HERE1');
       obj = {
@@ -99,11 +100,10 @@ export class GetTicketComponent implements OnInit {
   getTicketGroup(dataList) {
     const data = {
       paramlist: {
-        data: {
-          data: dataList
-        }
+        data: dataList
       }
     };
+    console.log(data);
 
     this.odoo
       .call_odoo_function(

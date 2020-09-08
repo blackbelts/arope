@@ -99,8 +99,8 @@ export class TicketFormComponent implements OnInit {
     };
     this.odoo
       .call_odoo_function(
-        'ticket.api',
-        'create_ticket',
+        "personal.front",
+        "create_personal_ticket",
         data
       )
       .subscribe(res => {
