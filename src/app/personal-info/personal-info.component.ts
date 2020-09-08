@@ -73,6 +73,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     Validators.required,
     Validators.email
   ]);
+  isLoading = false;
   constructor(
     private setting: SiteSettingsService,
     private travelerService: TravelerService,
@@ -84,7 +85,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     private uiService: UIService,
     private paymentService: PaymentService,
     private faweryService: FaweryService
-  ) {}
+  ) { }
   @ViewChild('fInfo', { static: false }) customForm: NgForm;
   @ViewChild('others', { static: false }) ngModelGroup: NgModelGroup;
   matcher = new MyErrorStateMatcher();
@@ -116,6 +117,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     after_die: 'true',
     language: ''
   };
+  payment_method
   chkOther = false;
   qnbConfig;
   breakpoint: number;
@@ -125,15 +127,19 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     this.breakpoint = window.innerWidth <= 700 ? 1 : 2;
     this.breakpoint2 = window.innerWidth <= 700 ? 1 : 3;
 
-    const data = {paramlist: {filter: [],
-      need: []}};
+    const data = {
+      paramlist: {
+        filter: [],
+        need: []
+      }
+    };
     this.odoo.call_odoo_function(
-  'res.country', 'search_read', data ).subscribe(res => {
-    this.countries = res;
-    console.log(this.countries);
-  });
+      'res.country', 'search_read', data).subscribe(res => {
+        this.countries = res;
+        console.log(this.countries);
+      });
 
-    this.setting.getSession();
+    /* this.setting.getSession(); */
 
 
     if (!this.data_info.othere) {
@@ -144,34 +150,34 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     // params query
     this.routerActivated.queryParamMap.subscribe(param => {
       // start code
-    // start code
-    if (param.has('step')) {
-      console.log('text', param.get('step'));
-      localStorage.setItem('stepper', 'true');
-      this.changeStatus.emit(true);
-      const formData = JSON.parse(localStorage.getItem('formData'));
+      // start code
+      if (param.has('step')) {
+        console.log('text', param.get('step'));
+        localStorage.setItem('stepper', 'true');
+        this.changeStatus.emit(true);
+        const formData = JSON.parse(localStorage.getItem('formData'));
 
-      const data = { paramlist: {data: formData.data} };
-      console.log('data', typeof(formData.data));
-      if (formData.key === 'personal') {
-        let headers = new HttpHeaders();
-        headers = headers.set('Accept', 'application/pdf');
-        console.log('personal==> ', data);
-        this.odoo.call_odoo_function(
-        'personal.front', 'create_policy', data ).subscribe(res => {
-          console.log(res);
-          this.uiService.loadResId.next(res[1]);
-          this.http.get('http://3.249.109.211:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
-            console.log(res);
-            saveAs(res, `Policy (AROPE).pdf`);
-            this.downloadTerms('http://207.154.195.214/PA_General_Conditions.pdf');
-            window.open('http://207.154.195.214/PA_General_Conditions.pdf', '_blank');
-          });
+        const data = { paramlist: { data: formData.data } };
+        console.log('data', typeof (formData.data));
+        if (formData.key === 'personal') {
+          let headers = new HttpHeaders();
+          headers = headers.set('Accept', 'application/pdf');
+          console.log('personal==> ', data);
+          this.odoo.call_odoo_function(
+            'personal.front', 'create_policy', data).subscribe(res => {
+              console.log(res);
+              this.uiService.loadResId.next(res[1]);
+              this.http.get('http://3.249.109.211:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+                console.log(res);
+                saveAs(res, `Policy (AROPE).pdf`);
+                this.downloadTerms('http://207.154.195.214/PA_General_Conditions.pdf');
+                window.open('http://207.154.195.214/PA_General_Conditions.pdf', '_blank');
+              });
 
-        });
+            });
         }
 
-    }
+      }
 
     });
 
@@ -193,7 +199,45 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
       saveAs(res, `Terms&Conditions.pdf`);
     });
   }
+  paymentChange(event) {
+    if (event.value !== "fawry") {
+      this.isLoading = true
+      let paymentScript = document.querySelector("#payment");
+      let iframe = document.querySelector("iframe");
+      if (paymentScript != null)
+        paymentScript.remove();
+      if (iframe != null)
+        iframe.remove()
+      const script = document.createElement("script");
+      script.id = "payment"
+      if (event.value === 'qnb') {
+        script.src = 'https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js';
+      } else if (event.value === 'nbe') {
+        script.src = 'https://nbe.gateway.mastercard.com/checkout/version/57/checkout.js';
+      }
+      script.setAttribute("data-cancel", "cancelCallback")
+      script.setAttribute("data-error", "errorCallback")
+      script.setAttribute("data-complete", "completeCallback")
+      script.type = 'text/javascript';
+      document.head.appendChild(script);
+      script.onload = (event) => {
+        this.isLoading = false;
+        //this.initQnpConfig();
+        console.log("loadddddddddddddddd")
+        console.log(event)
 
+      }
+
+      // Set script src depend on condition
+
+      /*  script.setAttribute("data-cancel", "cancel")
+       script.setAttribute("data-beforeRedirect", "cancel")
+       script.setAttribute("data-afterRedirect", "cancel") */
+      // Append
+
+    }
+
+  }
   onResize(event) {
 
     this.breakpoint = event.target.innerWidth <= 700 ? 1 : 2;
@@ -264,20 +308,26 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   async onClickAfterSubmit(payment_method) {
     const total_price = localStorage.getItem('total_price');
 
-    await this.paymentService.qnpGetSession(total_price,payment_method).subscribe(response => {
-      console.log(response , 'session');
-      const key1 =  'sesionID';
-      const key2 =  'orderID';
-      const dataSaved = {sesionID: response[key1], orderID: response[key2]};
+    await this.paymentService.qnpGetSession(total_price, payment_method).subscribe(response => {
+      console.log(response, 'session');
+      const key1 = 'sesionID';
+      const key2 = 'orderID';
+      const dataSaved = { sesionID: response[key1], orderID: response[key2] };
       localStorage.setItem('__arope_order_details', JSON.stringify(dataSaved));
+      if (payment_method === 'qnb') {
+        this.initQnpConfig();
+        // console.log('data start', this.data_info);
+        Checkout.showLightbox();
+      } else if (payment_method === 'nbe') {
+        this.initQnpConfig();
+        // console.log('data start', this.data_info);
+        Checkout.showLightbox();
+      }
 
     });
+    this.payment_method = payment_method
 
-    if (payment_method === 'qnp') {
-      this.initQnpConfig();
-      // console.log('data start', this.data_info);
-      Checkout.showLightbox();
-    } else if (payment_method === 'fawery') {
+    if (payment_method === 'fawery') {
       const returnData = this.faweryService.faweryConfig();
       console.log(returnData, 'return data');
       FawryPay.checkout((await returnData).charge_request, (await returnData).sucess_page_url, (await returnData).failer_page_url);
@@ -361,7 +411,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
   initQnpConfig() {
     const data_traveler = JSON.parse(localStorage.getItem('formData'));
-    const sessionIDLocalStorage =  JSON.parse(localStorage.getItem('__arope_order_details')).sesionID;
+    const sessionIDLocalStorage = JSON.parse(localStorage.getItem('__arope_order_details')).sesionID;
     const total_price = localStorage.getItem('total_price');
 
     if (data_traveler) {
@@ -382,10 +432,17 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
         }
       }
     }
-
+    let merchant = ""
+    if (this.payment_method == "nbe") {
+      merchant = "TESTNBETEST"
+    }
+    else if (this.payment_method == "qnb") {
+      merchant = "TESTQNBAATEST001"
+    }
+    console.log(merchant)
     // qnp config
     this.qnbConfig = {
-      merchant: 'TESTQNBAATEST001',
+      merchant: merchant,
       session: {
         id: sessionIDLocalStorage
       },
