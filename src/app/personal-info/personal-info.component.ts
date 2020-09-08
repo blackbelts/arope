@@ -139,7 +139,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
         console.log(this.countries);
       });
 
-    /* this.setting.getSession(); */
+    this.setting.getSession();
 
 
     if (!this.data_info.othere) {
@@ -327,7 +327,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     });
     this.payment_method = payment_method
 
-    if (payment_method === 'fawery') {
+    if (payment_method === 'fawry') {
       const returnData = this.faweryService.faweryConfig();
       console.log(returnData, 'return data');
       FawryPay.checkout((await returnData).charge_request, (await returnData).sucess_page_url, (await returnData).failer_page_url);
