@@ -1,7 +1,7 @@
 import { WelcomeService } from './../../welcome/welcome.service';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormControl, FormGroupDirective, NgForm, Validators, AbstractControl} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl, FormGroupDirective, NgForm, Validators, AbstractControl } from '@angular/forms';
 import { SiteSettingsService } from 'src/app/shared/site_settings.service';
 import { OdooService } from 'src/app/shared/odoo.service';
 import { TravelerService } from '../traveler.service';
@@ -9,7 +9,7 @@ import { ValidationService } from 'src/app/shared/validation.service';
 import { saveAs } from 'file-saver';
 // FORMATE DATE
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
-import { AppDateAdapter, APP_DATE_FORMATS} from '../../date.adapter';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../date.adapter';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UIService } from 'src/app/shared/ui.services';
@@ -35,7 +35,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
       provide: DateAdapter, useClass: AppDateAdapter
     },
     {
-        provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+      provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
     }
   ]
 })
@@ -58,17 +58,17 @@ export class InfoComponent implements OnInit, AfterViewInit {
     // private save: saveAs
   ) {
   }
-  @ViewChild('fInfo', {static: false}) customForm: NgForm;
+  @ViewChild('fInfo', { static: false }) customForm: NgForm;
   sessionID: string;
   // @ViewChild('fInfo', {static: true}) form: NgForm;
   numOfTravelers = [];
-  types  = [
-    {value: 'spouse', viewValue: 'Spouse'},
-    {value: 'kid', viewValue: 'Kid'},
-    {value: 'brother', viewValue: 'Brother'},
-    {value: 'sister', viewValue: 'Sister'},
-    {value: 'parent', viewValue: 'Parent'},
-    {value: 'grandparents', viewValue: 'Grandparents'},
+  types = [
+    { value: 'spouse', viewValue: 'Spouse' },
+    { value: 'kid', viewValue: 'Kid' },
+    { value: 'brother', viewValue: 'Brother' },
+    { value: 'sister', viewValue: 'Sister' },
+    { value: 'parent', viewValue: 'Parent' },
+    { value: 'grandparents', viewValue: 'Grandparents' },
 
   ];
   numberPattern = '^(\d|\w)+$';
@@ -119,87 +119,87 @@ export class InfoComponent implements OnInit, AfterViewInit {
 
 
 
-   this.breakpoint = window.innerWidth <= 700 ? 1 : 2;
-   this.breakpoint2 = window.innerWidth <= 700 ? 1 : 3;
+    this.breakpoint = window.innerWidth <= 700 ? 1 : 2;
+    this.breakpoint2 = window.innerWidth <= 700 ? 1 : 3;
 
     // start qnp config
     // this.initQnpConfig();
-      // end qnp config
-  // params query
-   this.routerActivated.queryParamMap.subscribe(param => {
+    // end qnp config
+    // params query
+    this.routerActivated.queryParamMap.subscribe(param => {
 
-    // start code
-    if (param.has('step')) {
-      console.log('text', param.get('step'));
-      localStorage.setItem('stepper', 'true');
-      this.changeStatus.emit(true);
-      const formData = JSON.parse(localStorage.getItem('formData'));
+      // start code
+      if (param.has('step')) {
+        console.log('text', param.get('step'));
+        localStorage.setItem('stepper', 'true');
+        this.changeStatus.emit(true);
+        const formData = JSON.parse(localStorage.getItem('formData'));
 
-      const data = { paramlist: {data: formData.data} };
-      console.log('data', data);
-      if (formData.key === 'travel') {
-        // setup download file
-        let headers = new HttpHeaders();
-        headers = headers.set('Accept', 'application/pdf');
+        const data = { paramlist: { data: formData.data } };
+        console.log('data', data);
+        if (formData.key === 'travel') {
+          // setup download file
+          let headers = new HttpHeaders();
+          headers = headers.set('Accept', 'application/pdf');
 
 
-        this.odoo.call_odoo_function(
+          this.odoo.call_odoo_function(
             'travel.front',
             'create_policy',
             data
           )
-          .subscribe(res => {
-            console.log('ressss', res);
-            this.uiService.loadResId.next(res[1]);
-            // this.testDownload();
+            .subscribe(res => {
+              console.log('ressss', res);
+              this.uiService.loadResId.next(res[1]);
+              // this.testDownload();
 
-            // download file
-            this.http.get('http://3.249.109.211:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
-              console.log(res);
-              saveAs(res, `Policy (AROPE).pdf`);
-              // return this.http.get('http://207.154.195.214:8070/Terms/');
-              // const link = document.createElement('a');
-              // link.href = '207.154.195.214/TravelWording.pdf';
-              // link.download = 'file.pdf';
-              // link.dispatchEvent(new MouseEvent('click'));
-              window.open('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf', '_blank');
-              this.downloadTerms('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf');
+              // download file
+              this.http.get('http://3.249.109.211:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+                console.log(res);
+                saveAs(res, `Policy (AROPE).pdf`);
+                // return this.http.get('http://207.154.195.214:8070/Terms/');
+                // const link = document.createElement('a');
+                // link.href = '207.154.195.214/TravelWording.pdf';
+                // link.download = 'file.pdf';
+                // link.dispatchEvent(new MouseEvent('click'));
+                window.open('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf', '_blank');
+                this.downloadTerms('http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/TravelWording_General_Conditions.pdf');
+              });
+
+
             });
-
-
-          });
         }
 
+      }
+
+    });
+
+
+    this.type = localStorage.getItem('type');
+    if (this.type === 'individual') {
+      this.indi = true;
+      this.date = localStorage.getItem('date');
+    } else {
+      const fJson = JSON.parse(localStorage.getItem('typesDates'));
+      this.dataJson = JSON.parse(fJson);
+      this.typesList = this.dataJson.types;
+      this.datesList = this.dataJson.dates;
+      console.log('DateList', this.datesList);
     }
+    if (this.lang === 'en') {
+      this.dateAdapter.setLocale('en');
+    } else if (this.lang === 'ar') {
+      this.dateAdapter.setLocale('ar');
+    }
+    this.minDateKid = this.setting.getDateInYears(18);
+    this.maxDateKid = this.welService.getMinDateBefore30Days();
+    const emptyArr = new Array(
+      parseInt(localStorage.getItem('numOfTraveler'))
+    );
+    for (let i = 0; i < emptyArr.length; i++) {
 
-  });
-
-
-   this.type = localStorage.getItem('type');
-   if (this.type === 'individual') {
-    this.indi = true;
-    this.date = localStorage.getItem('date');
-  } else {
-    const fJson = JSON.parse(localStorage.getItem('typesDates'));
-    this.dataJson = JSON.parse(fJson);
-    this.typesList = this.dataJson.types;
-    this.datesList = this.dataJson.dates;
-    console.log('DateList', this.datesList);
-  }
-   if (this.lang === 'en') {
-    this.dateAdapter.setLocale('en');
-  } else if (this.lang === 'ar') {
-    this.dateAdapter.setLocale('ar');
-  }
-   this.minDateKid = this.setting.getDateInYears(18);
-   this.maxDateKid = this.welService.getMinDateBefore30Days();
-   const emptyArr = new Array(
-    parseInt(localStorage.getItem('numOfTraveler'))
-  );
-   for (let i = 0; i < emptyArr.length; i++) {
-
-        this.numOfTravelers.push(i);
-   }
+      this.numOfTravelers.push(i);
+    }
 
     // this.loadStripe();
     // this.loadData();
@@ -289,8 +289,8 @@ export class InfoComponent implements OnInit, AfterViewInit {
   get lang() { return localStorage.getItem('lang'); }
 
 
-  fullNameText(firstName, middleName , LastName) {
-    return firstName + ' '  + middleName + ' ' + LastName;
+  fullNameText(firstName, middleName, LastName) {
+    return firstName + ' ' + middleName + ' ' + LastName;
   }
   goEmptyDate() {
     const selectElement = document.querySelector('.selectOptionType');
@@ -327,29 +327,37 @@ export class InfoComponent implements OnInit, AfterViewInit {
 
 
 
-      const formData = {data: {
-        source: 'online',
-        package: localStorage.getItem('type'),
-        c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
-        add: form.value.address,
-        pass: form.value.Passport,
-        dob: age,
-        gender: form.value.gender,
-        phone: form.value.phoneNumber,
-        zone: localStorage.getItem('zone'),
-        p_from: when,
-        p_to: till,
-        family: [],
-        id: form.value.id,
-        mail: form.value.emailAddress,
-        national: form.value.national,
-        confirm: true,
-        chk: true,
-        condition: true
-      }, key: 'travel'};
+      const formData = {
+        data: {
+          source: 'online',
+          package: localStorage.getItem('type'),
+          c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
+          add: form.value.address,
+          pass: form.value.Passport,
+          dob: age,
+          gender: form.value.gender,
+          phone: form.value.phoneNumber,
+          zone: localStorage.getItem('zone'),
+          p_from: when,
+          p_to: till,
+          family: [],
+          id: form.value.id,
+          mail: form.value.emailAddress,
+          national: form.value.national,
+          confirm: true,
+          chk: true,
+          condition: true
+        }, key: 'travel'
+      };
       localStorage.setItem('formData', JSON.stringify(formData));
-      const data = {paramlist: {data: {z: localStorage.getItem('zone'), d: [age],
-        p_from: when, p_to: till}}};
+      const data = {
+        paramlist: {
+          data: {
+            z: localStorage.getItem('zone'), d: [age],
+            p_from: when, p_to: till
+          }
+        }
+      };
       this.odoo.call_odoo_function('policy.travel',
         'get_individual', data).subscribe(res => {
           const x = res.gross.toFixed(2);
@@ -398,44 +406,52 @@ export class InfoComponent implements OnInit, AfterViewInit {
           kidAges.push(dateBirth);
         }
 
-        index ++;
+        index++;
+      }
+      const data = {
+        paramlist: {
+          data: {
+            z: localStorage.getItem('zone'), p_from: when,
+            p_to: till, kid_dob: kidAges
+          }
         }
-      const data = {paramlist: {data: {z: localStorage.getItem('zone'), p_from: when,
-        p_to: till, kid_dob: kidAges}}};
+      };
       const familyD = emptyArr;
-      const formData = {data: {
-        source: 'online',
-        package: localStorage.getItem('type'),
-        c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
-        add: form.value.address,
-        pass: form.value.Passport,
-        gender: form.value.gender,
-        phone: form.value.phoneNumber,
-        dob: age,
-        zone: localStorage.getItem('zone'),
-        p_from: when,
-        p_to: till,
-        family: familyD,
-        mail: form.value.emailAddress,
-        id: form.value.id,
-        confirm: true,
-        national: form.value.national,
-        chk: true,
-        condition: true
+      const formData = {
+        data: {
+          source: 'online',
+          package: localStorage.getItem('type'),
+          c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
+          add: form.value.address,
+          pass: form.value.Passport,
+          gender: form.value.gender,
+          phone: form.value.phoneNumber,
+          dob: age,
+          zone: localStorage.getItem('zone'),
+          p_from: when,
+          p_to: till,
+          family: familyD,
+          mail: form.value.emailAddress,
+          id: form.value.id,
+          confirm: true,
+          national: form.value.national,
+          chk: true,
+          condition: true
 
-      }, key: 'travel'};
+        }, key: 'travel'
+      };
       localStorage.setItem('formData', JSON.stringify(formData));
       this.odoo.call_odoo_function('policy.travel',
-      'get_family', data).subscribe(res => {
-        const x = res.gross.toString();
-        console.log(x);
-        // console.log(res);
-        localStorage.setItem('total_price', x);
-        this.changeShowValue();
+        'get_family', data).subscribe(res => {
+          const x = res.gross.toString();
+          console.log(x);
+          // console.log(res);
+          localStorage.setItem('total_price', x);
+          this.changeShowValue();
 
 
-        this.onClickAfterSubmit(form.value.payment_method);
-      });
+          this.onClickAfterSubmit(form.value.payment_method);
+        });
       this.welService.sendQuoteResult('get_family', data);
     }
     this.isValidFormSubmitted = true;
@@ -457,9 +473,9 @@ export class InfoComponent implements OnInit, AfterViewInit {
       } else if (event.value === 'nbe') {
         script.src = 'https://nbe.gateway.mastercard.com/checkout/version/57/checkout.js';
       }
-      script.setAttribute("data-cancel","cancelCallback")
-      script.setAttribute("data-error","errorCallback")
-      script.setAttribute("data-complete","completeCallback")
+      script.setAttribute("data-cancel", "cancelCallback")
+      script.setAttribute("data-error", "errorCallback")
+      script.setAttribute("data-complete", "completeCallback")
       script.type = 'text/javascript';
       document.head.appendChild(script);
       script.onload = (event) => {
@@ -489,7 +505,6 @@ export class InfoComponent implements OnInit, AfterViewInit {
       const key2 = 'orderID';
       const dataSaved = { sesionID: response[key1], orderID: response[key2] };
       localStorage.setItem('__arope_order_details', JSON.stringify(dataSaved));
-      console.log("dfghjkl;'waesrdtfgyhjkl;sdfghjkl")
       if (payment_method === 'qnb') {
         this.initQnpConfig();
         // console.log('data start', this.data_info);
@@ -501,7 +516,6 @@ export class InfoComponent implements OnInit, AfterViewInit {
       }
     });
     this.payment_method = payment_method
-    console.log("dfghllllllllllllllllllllllllllllllllllllllllllll")
 
     if (payment_method === 'fawry') {
       const returnData = this.faweyService.faweryConfig();
@@ -524,10 +538,10 @@ export class InfoComponent implements OnInit, AfterViewInit {
       year = d.getFullYear();
 
     if (month.length < 2) {
-        month = '0' + month;
+      month = '0' + month;
     }
     if (day.length < 2) {
-        day = '0' + day;
+      day = '0' + day;
     }
 
     return [year, month, day].join('-');
