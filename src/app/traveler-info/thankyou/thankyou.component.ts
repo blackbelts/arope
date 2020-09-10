@@ -18,12 +18,12 @@ export class ThankyouComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.fullName = localStorage.getItem('fullName');
-    this.loadResIdSub = await this.uiService.loadResId.subscribe(res=> {
+    this.loadResIdSub = await this.uiService.loadResId.subscribe(res => {
       this.numDoc = res;
       this.uiService.loadingChangedStatus.next(false);
     });
 
-    this.isLoadingSubscription = this.uiService.loadingChangedStatus.subscribe(res=> {
+    this.isLoadingSubscription = this.uiService.loadingChangedStatus.subscribe(res => {
       this.isLoading = res;
     });
   }
@@ -33,15 +33,13 @@ export class ThankyouComponent implements OnInit, OnDestroy {
       // let myItem = localStorage.getItem('lang');
       // localStorage.clear();
       // localStorage.setItem('lang', myItem);
-  
-      let script = document.querySelector("#myscript");
-      script.removeAttribute("data-complete");
+      // document.querySelector("#myscript").removeAttribute("data-complete");
     });
   }
 
-  ngOnDestroy () {
-    if(this.loadResIdSub) {this.loadResIdSub.unsubscribe()}
-    if(this.isLoadingSubscription) {this.isLoadingSubscription.unsubscribe()}
+  ngOnDestroy() {
+    if (this.loadResIdSub) {this.loadResIdSub.unsubscribe(); }
+    if (this.isLoadingSubscription) {this.isLoadingSubscription.unsubscribe(); }
   }
 
 }

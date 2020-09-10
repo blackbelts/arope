@@ -31,20 +31,21 @@ export class PriceCardComponent implements OnInit {
   }
 
   ngOnInit() {
-      //params query 
-  this.routerActivated.queryParamMap.subscribe(param => {
+    this.isDisabled = false;
+      // params query
+    this.routerActivated.queryParamMap.subscribe(param => {
 
-    //start code
-    if(param.has('step')) {
+    // start code
+    if (param.has('step')) {
       console.log('text', param.get('step'));
       this.clicked.emit(true);
     }
-    
+
   });
 
-  if (localStorage.getItem("stepper") === null) {
+    if (localStorage.getItem("stepper") === null) {
     this.stepper = false;
-  } else if(Boolean(localStorage.getItem("stepper")) === true) {
+  } else if (Boolean(localStorage.getItem("stepper")) === true) {
     this.stepper = true;
   }
 

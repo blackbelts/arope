@@ -120,7 +120,8 @@
         "cover": "Cover",
         "comprehensive_1": "Comprehensive",
         "comprehensive_2": "Comprehensive 2",
-        "total_loss_only": "Total Loss Only"
+        "total_loss_only": "Total Loss Only",
+        "country": "Country OF Origin"
     },
     "group": {
         "title": "Please fill out the form below",

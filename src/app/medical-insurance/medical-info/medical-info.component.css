@@ -40,9 +40,10 @@ mat-card-title {
 th.mat-header-cell {
     font-weight: bold;
     font-size: 20px;
-    text-align: center;
+    text-align: center !important;
     background-color: #073e89;
     color: #fff;
+    padding: 12px;
 }
 
 td.mat-cell {
@@ -91,15 +92,22 @@ th.mat-header-cell.cdk-column-blue {
     padding: 12px;
 }
 
-td.mat-cell.cdk-column-cover,
-td.mat-cell.cdk-column-Elite,
-td.mat-cell.cdk-column-Prestige,
-td.mat-cell.cdk-column-Blue {
-    width: 25%;
+td.mat-cell,
+td.mat-cell,
+td.mat-cell,
+td.mat-cell {
     border-left: .5px solid #073e89;
 }
 
 td.mat-cell.cdk-column-Blue {
     width: 25%;
     border-left: 0px;
+}
+.buy_button {
+    margin-top: 8px;
+    color: #fff;
+    background-color: #e77a11;
+}
+td {
+    padding: 10px !important;
 }

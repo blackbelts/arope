@@ -86,9 +86,9 @@ export class PersonalResultComponent implements OnInit {
     // localStorage.clear();
     // localStorage.setItem('lang', myItem);
 
-    let script = document.querySelector("#myscript");
-    script.removeAttribute("data-complete");
-    
+    // let script = document.querySelector("#myscript");
+    // script.removeAttribute("data-complete");
+
   }
 
 }

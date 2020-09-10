@@ -33,6 +33,7 @@ export class PriceCardPaymentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isDisabled = false;
     this.formList = this.travelerService.paymentForm;
     console.log('formList', this.formList.cardNumber);
     this.totalPrice = localStorage.getItem('total_price');

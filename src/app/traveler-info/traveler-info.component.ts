@@ -30,8 +30,8 @@ export class TravelerInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
- 
-    if(this.selectedIndex === 0) {
+
+    if (this.selectedIndex === 0) {
       localStorage.removeItem('stepper');
     }
 
@@ -81,7 +81,7 @@ export class TravelerInfoComponent implements OnInit, OnDestroy {
   }
 
   triggerClick() {
-    if(this.selectedIndex === 0) {
+    if (this.selectedIndex === 0) {
       console.log('remove');
       localStorage.removeItem('stepper');
     }
@@ -94,7 +94,7 @@ export class TravelerInfoComponent implements OnInit, OnDestroy {
     // localStorage.clear();
     // localStorage.setItem('lang', myItem);
 
-    let script = document.querySelector("#myscript");
-    script.removeAttribute("data-complete");
+    // let script = document.querySelector("#myscript");
+    // script.removeAttribute("data-complete");
   }
 }

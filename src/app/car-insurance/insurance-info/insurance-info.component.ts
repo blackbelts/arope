@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UIService } from 'src/app/shared/ui.services';
 import { HttpClient } from '@angular/common/http';
 import { MatStepper } from '@angular/material';
+import {DataSource} from '@angular/cdk/collections';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 @Component({
   selector: 'app-insurance-info',
@@ -26,8 +29,8 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
   infoStatus1 = false;
   travelerInfoStatus = false;
 
-  displayedColumns1: string[] = ['cover', 'comprehensive_1', 'comprehensive_2', 'total_loss_only'];
-  displayedColumns2: string[] = ['cover', 'comprehensive', 'total_loss_only'];
+  displayedColumns1: string[] = [];
+  displayedColumns2: string[] = [];
 
   objCarInfo;
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
@@ -35,7 +38,6 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient , private carService: CarInsuranceService, private route: ActivatedRoute, private router: Router, private uiService: UIService) { }
 
   ngOnInit() {
-
 
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('brand') && !paramMap.has('product') && !paramMap.has('price'))  {
@@ -45,17 +47,26 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
       this.brandCar = paramMap.get('brandCar');
       this.brand = paramMap.get('brand');
       this.price = paramMap.get('price');
-      
+
 
     });
     this.isLoadingSubs = this.uiService.loadingChangedStatus.subscribe(res => {
       this.isLoading = res;
-      
+
     });
 
     this.loadPriceSub = this.carService.loadPrice.subscribe(res => {
 
       this.objCarInfo = res;
+      this.displayedColumns2.push('cover');
+      let all = [];
+      all =  Object.keys(this.objCarInfo[0]);
+      for (const rec of all) {
+        this.displayedColumns2.push(rec);
+      }
+      this.displayedColumns1 = this.displayedColumns2.filter((value, index, array) =>
+      !array.filter((v, i) => JSON.stringify(value) === JSON.stringify(v) && i < index).length);
+      console.log(this.displayedColumns1);
       console.log('res', res);
     });
 
@@ -65,7 +76,7 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
       }
     };
     this.carService.sendPriceAndGetPrice(data);
-  
+
 
     if (this.lang === 'en') {
       this.direction = 'ltr';
@@ -79,16 +90,16 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
 
 
   chkIfTrueOrFalse(val) {
-    if(val == 'true' || val == 'false') {
-      
+    if (val === 'true' || val === 'false') {
 
-      if(val == 'true') {
+
+      if (val === 'true') {
         return true;
       } else {
         return false;
       }
 
-    } else if(val == '') {
+    } else if (val === '') {
       return 'ـــ';
     } else {
       return val;
@@ -96,7 +107,7 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
   }
 
   goForwardToPayment(stepper: MatStepper, event) {
- 
+
     this.infoStatus1 = true;
     setTimeout(() => {
       if (this.infoStatus1) { this.stepper.next(); }
@@ -106,9 +117,9 @@ export class InsuranceInfoComponent implements OnInit, OnDestroy {
 
   goToNextStepper(type, plan, stepper: MatStepper) {
    localStorage.setItem('planTypeCar', plan);
-    this.infoStatus = true;
+   this.infoStatus = true;
 
-    setTimeout(() => {
+   setTimeout(() => {
       if (this.infoStatus) { this.stepper.next(); }
     }, 100);
 
