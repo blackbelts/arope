@@ -27,8 +27,9 @@
                         <mat-card *ngFor="let info of objMedicalInfo; let i = index">
                             <mat-card-title *ngIf="info.name != 'main'">{{info.name}}</mat-card-title>
                                 <table *ngIf="!isLoading" mat-table [dataSource]="info.plans" class="mat-elevation-z8">
-
-
+                                    <!-- <ng-container matColumnDef="item-description" >
+                                        <th [attr.colspan]="4" mat-header-cell *matHeaderCellDef> Name of the item purchased </th>
+                                      </ng-container> -->
 
                                     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns" >
                                         <th mat-header-cell *matHeaderCellDef>
@@ -102,7 +103,7 @@
 
                                     </ng-container>
  -->
-
+                                    <!-- <tr mat-header-row *matHeaderRowDef="['item-description']"></tr> -->
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -184,10 +185,10 @@
                             {{ 'notes.title' | translate }} <span style="color: red;">*</span>
                         </mat-card-title>
                     
-                        <ul class="notes">
-                            <li>{{ 'notes.note1' | translate }}</li>
-                            <li>{{ 'notes.note2' | translate }}</li>
-                            <li>{{ 'notes.note3' | translate }}</li>
+                        <ul class="notes" *ngFor="let note of notes" >
+                            <li>{{ note}}</li>
+                            <!-- <li>{{ 'notes.note2' | translate }}</li>
+                            <li>{{ 'notes.note3' | translate }}</li> -->
                     
                         </ul>
                     </mat-card>

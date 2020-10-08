@@ -55,12 +55,12 @@ export class CarQuoteComponent implements OnInit, OnDestroy {
     }
 
     const brandCar = this.carService.getValueBrand(Number(form.value.brandCar));
-   
+
 
     this.router.navigate(['/', 'car-insurance', 'insurance-info',
     brandCar, form.value.brand,
      form.value.price]);
-    
+
   }
 
   checkDeductibleRateOptions(form: NgForm) {

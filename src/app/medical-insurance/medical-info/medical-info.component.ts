@@ -15,10 +15,12 @@ export class MedicalInfoComponent implements OnInit, OnDestroy {
   travelerInfoStatus = false;
   displayedColumns: string[] = [];
   loadMedicalInfoSub: Subscription;
+  loadMedicalNotesSub: Subscription;
   type: string;
   date: string;
   objMedicalInfo;
   lang;
+  notes: [];
   @ViewChild('stepper', {static: true}) stepper: MatStepper;
   constructor(private medicalService: MedicalService, private router: Router, private activatedParam: ActivatedRoute) {
   }
@@ -30,12 +32,16 @@ export class MedicalInfoComponent implements OnInit, OnDestroy {
         localStorage.setItem('medicalType', this.type);
         this.date = param.get('date');
         console.log('type => ', this.type);
+        this.loadMedicalNotesSub = this.medicalService.loadMedicalNotes.subscribe(note => {
+          this.notes = note;
+          console.log(this.notes);
 
+        });
         this.loadMedicalInfoSub = this.medicalService.loadMedicalInfo.subscribe(info => {
-          this.objMedicalInfo = info;
+          this.objMedicalInfo = info.data;
           this.displayedColumns.push('cover');
-          let all = [];
-          all =  Object.keys(this.objMedicalInfo[0].plans[0]);
+          const all = info.column;
+          // all =  info.columns;
           for (const rec of all) {
             this.displayedColumns.push(rec);
           }
@@ -59,6 +65,7 @@ export class MedicalInfoComponent implements OnInit, OnDestroy {
 
           this.medicalService.getTabels(this.type, new_arr2);
         }
+        this.medicalService.get_notes(this.type);
       });
   }
 
