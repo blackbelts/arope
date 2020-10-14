@@ -134,7 +134,14 @@ export class InfoComponent implements OnInit, AfterViewInit {
         localStorage.setItem('stepper', 'true');
         this.changeStatus.emit(true);
         const formData = JSON.parse(localStorage.getItem('formData'));
-
+        let s_covers = []
+        if (localStorage.getItem("s_covers") != "") {
+          s_covers = localStorage.getItem("s_covers").split(",")
+          s_covers.forEach((cover, index) => {
+            s_covers[index] = parseInt(cover)
+          })
+        }
+        formData.data.s_covers=s_covers
         const data = { paramlist: { data: formData.data } };
         console.log('data', data);
         if (formData.key === 'travel') {

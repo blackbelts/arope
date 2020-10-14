@@ -31,7 +31,8 @@
         "egypt": "Egyptian",
         "err85": "You Must Not Be Older Than 85 Years During The Coverage Period",
         "back_home": "Back To Home page",
-        "non_egypt": "Non Egyptian"
+        "non_egypt": "Non Egyptian",
+        "covid19":"ًWith COVID19"
     },
     "stepper": {
         "step1": "Quote Result",

@@ -88,6 +88,14 @@ export class PaymentComponent implements OnInit, AfterViewChecked {
     if (form.valid) {
       console.log("ay kalam 1");
       const formData = JSON.parse(localStorage.getItem("formData"));
+      let s_covers = []
+      if (localStorage.getItem("s_covers") != "") {
+        s_covers = localStorage.getItem("s_covers").split(",")
+        s_covers.forEach((cover, index) => {
+          s_covers[index] = parseInt(cover)
+        })
+      }
+      formData.data.s_covers=s_covers
       const data = { paramlist: formData };
       this.odoo
         .call_odoo_function(
