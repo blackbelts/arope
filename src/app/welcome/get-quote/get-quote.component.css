@@ -65,6 +65,25 @@ mat-radio-button {
     align-items: center;
     /* height: 60px; */
   }
-  .example-margin {
-    margin: 0 10px;
+  .example-margin:first-child{
+      margin:0
   }
+  .example-margin {
+    margin: 10px 10px;
+  }
+  .select .mat-grid-tile .mat-figure{
+    display: inline-block !important;
+}
+.radioFloat {
+    float:left;
+}
+.radioMargin {
+    margin-left: 50%;
+}
+
+.ar_radioFloat {
+    float:right;
+}
+.ar_radioMargin {
+    margin-right: 50%;
+}
