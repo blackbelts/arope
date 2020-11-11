@@ -1,5 +1,5 @@
 import { OdooService } from 'src/app/shared/odoo.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {SiteSettingsService} from '../shared/site_settings.service';
@@ -32,9 +32,10 @@ export class PersonalAccidentComponent implements OnInit {
   minDate: Date;
   type = 6;
   isShow = true;
+  rate: boolean;
   constructor(private odoo: OdooService, private router: Router, private site: SiteSettingsService,
               private activateRouter: ActivatedRoute) { }
-
+  @ViewChild('f', { static: false }) customForm: NgForm;
   ngOnInit() {
     this.activateRouter.queryParamMap.subscribe(paramMap => {
       if (paramMap.has('page')) {
@@ -44,8 +45,8 @@ export class PersonalAccidentComponent implements OnInit {
 
     this.breakpoint = window.innerWidth <= 700 ? 1 : 3;
     /* max and min date */
-    this.maxDate = this.site.getDateInYears(18);
-    this.minDate = this.site.getDateInYears(75);
+    this.maxDate = this.site.getDateInYears(21);
+    this.minDate = this.site.getDateInYears(60);
     /* end max and min date */
     this.isShow = false;
 
@@ -137,7 +138,7 @@ export class PersonalAccidentComponent implements OnInit {
   'policy.personal', 'get_qouate', data ).subscribe(res => {
     console.log(res);
     localStorage.setItem('total_price', parseInt(res).toString());
-    if (form.value.rate >= 1500000) {
+    if (form.value.rate >= 1250000) {
       console.log('HERE');
       // console.log(this.getTitleJobId(form.value.job));
       this.isOn = false;
@@ -163,6 +164,16 @@ export class PersonalAccidentComponent implements OnInit {
   showField(event) {
     const valueField = event.value;
     this.type = valueField;
+  }
+  checkRate() {
+    const rate = 'rate';
+    const value = this.customForm.value[rate];
+    if (value < 5000) {
+      this.rate = false;
+    } else {
+      this.rate = true;
+    }
+
   }
   convertDate(dateAge) {
     let d = new Date(dateAge),

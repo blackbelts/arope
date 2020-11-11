@@ -38,7 +38,9 @@
                             <mat-grid-tile>
                                 <mat-form-field appearance="outline" class='form-field'>
                                     <mat-label>{{ 'personal.sum' | translate }}</mat-label>
-                                    <input matInput type="number" name="rate" ngModel #id="ngModel" required min="0">
+                                    <input matInput type="number" name="rate" ngModel #id="ngModel" required min="5000" (input)="checkRate()">
+                                    <p *ngIf="rate === false" class="custom-error">{{ 'personal.rate_alert' | translate }}</p>
+                                    <!-- <mat-error *ngIf="id.hasError('min')">Minmum is 5000</mat-error> -->
                                 </mat-form-field>
                             </mat-grid-tile>
                             <div class="clearfix"></div>
@@ -75,7 +77,7 @@
                         <div>
                             <a style="margin: 20px 0; display: block;font-weight: 500;" [routerLink]="[ '/','get_ticket', {page: 'find-yourjob'}]">{{ 'personal.question' | translate }}</a>
                         </div>
-                        <button *ngIf="!isLoading" class='button-quote' mat-button color="primary" type="submit" [disabled]="f.invalid">{{ 'medical.get_quote' | translate }}</button>
+                        <button *ngIf="!isLoading" class='button-quote' mat-button color="primary" type="submit" [disabled]="f.invalid || rate !== true">{{ 'medical.get_quote' | translate }}</button>
                         <div *ngIf="isLoading" fxLayoutAlign="center center">
                             <mat-spinner [diameter]="40"></mat-spinner>
                         </div>

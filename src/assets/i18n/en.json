@@ -179,7 +179,8 @@
         "ar": "The policy is issued in Arabic",
         "en": "The policy is issued in English",
         "lang_note": "Note Please fill in the information in the chosen language",
-        "policy_covers": "The Policy Covers  / Benefits"
+        "policy_covers": "The Policy Covers  / Benefits",
+        "rate_alert": "Minimum Amount Must Be 5000"
     },
     "thankyou": {
         "title1": "عميلنا العزيز",
