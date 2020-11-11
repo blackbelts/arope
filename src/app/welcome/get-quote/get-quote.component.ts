@@ -55,7 +55,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
   newDate;
   breakpoint2;
   indiMaxDate;
-  isShow=false
+  isShow = false
   formFields = {
     typeTraveler: 'individual',
     dates: '',
@@ -98,7 +98,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
     this.odoo.call_odoo_function(
       'travel.benefits', 'search_read', { paramlist: { filter: ["&", ["active_online", "=", "true"], ["special_covers", "=", "true"]] } }).subscribe(res => {
         let lang = localStorage.getItem('lang')
-        this.isShow=true
+        this.isShow = true
         console.log(lang)
         res.forEach(cover => {
           if (lang == 'ar') {

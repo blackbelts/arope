@@ -23,12 +23,12 @@
                             <mat-grid-tile>
                                 <mat-form-field appearance="outline" class='form-field'>
                                     <mat-label>{{ 'personal.job' | translate }}</mat-label>
-                                    <mat-select *ngIf="lang == 'en'"  name="job" ngModel #jobInput="ngModel" required>
+                                    <mat-select *ngIf="lang == 'en'" name="job" ngModel #jobInput="ngModel" required>
                                         <mat-option *ngFor="let job of jobs" [value]="job.id">
                                             {{job.job_id}}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-select *ngIf="lang == 'ar'"  name="job" ngModel #jobInput="ngModel" required>
+                                    <mat-select *ngIf="lang == 'ar'" name="job" ngModel #jobInput="ngModel" required>
                                         <mat-option *ngFor="let job of jobs" [value]="job.id">
                                             {{job.ar_job_id}}
                                         </mat-option>
@@ -52,7 +52,8 @@
                             </div>
                             <div *ngIf="isShow">
                                 <mat-radio-group *ngFor="let cover of basicCovers" required aria-label="Select an option" color="primary" name="type" ngModel="type" #typeInput="ngModel" (change)="showField($event)">
-                                    <mat-radio-button style="margin-bottom:4px;" checked value="{{cover.id}}">{{cover.cover_id}}</mat-radio-button>
+                                    <mat-radio-button style="margin-bottom:4px;" checked value="{{cover.id}}">{{cover.cover_id}}
+                                    </mat-radio-button>
                                     <br>
                                 </mat-radio-group>
 
@@ -71,7 +72,7 @@
                                 </div>
                             </ng-container>
                         </div>
-                        
+
                         <div>
                             <a style="margin: 20px 0; display: block;font-weight: 500;" [routerLink]="[ '/','get_ticket', {page: 'find-yourjob'}]">{{ 'personal.question' | translate }}</a>
                         </div>
