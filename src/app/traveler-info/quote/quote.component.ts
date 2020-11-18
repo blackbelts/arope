@@ -15,14 +15,19 @@ export class QuoteComponent implements OnInit, OnDestroy {
   isLoading = false;
   isLoadingSubs: Subscription;
   resObjExcess;
-
+  s_covers = [];
   typeCheck: string;
 
   constructor(private travelerService: TravelerService, private uiService: UIService) {
-   }
+  }
 
   ngOnInit() {
     this.typeCheck = localStorage.getItem('type');
+    // this.s_covers = localStorage.getItem("s_covers").split(",");
+    // this.s_covers.forEach((cover, index) => {
+    //   this.s_covers[index] = parseInt(cover);
+    // });
+    // console.log(this.s_covers);
     this.loadBenefitsSub = this.travelerService.loadListBenefits.subscribe(
       result => {
         this.transactions = result;

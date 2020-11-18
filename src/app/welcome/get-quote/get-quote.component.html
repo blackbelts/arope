@@ -3,9 +3,19 @@
 
         <input type="hidden" name="types" [ngModel]="familyDataString" #types="ngModel">
         <mat-card fxFlex="750px" fxFlex.xs="100%" class='overlay'>
-            <mat-card-title fxLayoutAlign="flex-start">{{ 'traveler.title' | translate }}</mat-card-title>
+            <mat-card-title>
+                <p>
+                    {{ 'traveler.title' | translate }}
+                </p>
+                <!-- <section class="example-section">
+          <mat-checkbox *ngFor="let cover of special_covers" [value]="cover.id" class="example-margin" (change)="specialCoversChange($event)">{{cover.cover}}</mat-checkbox>
+        </section> -->
+            </mat-card-title>
             <mat-card-content>
-
+                <mat-radio-group color="success" *ngFor="let product of products" aria-label="Select an option" color="primary" name="product" [(ngModel)]="formFields.product" #typeInput="ngModel"  required>
+                    <mat-radio-button [value]="product.id">{{ product.name }}</mat-radio-button>
+                </mat-radio-group>
+                <br><br>
                 <mat-radio-group color="success" aria-label="Select an option" color="primary" name="type" [(ngModel)]="formFields.typeTraveler" #typeInput="ngModel" (change)="showField($event)" required>
                     <mat-radio-button value="individual">{{ 'traveler.indi' | translate }}</mat-radio-button>
                     <mat-radio-button value="family">{{ 'traveler.family' | translate }}</mat-radio-button>
@@ -88,8 +98,8 @@
                             <mat-label>{{"traveler.period"| translate}}</mat-label>
                             <mat-select name="period" ngModel #periodInput="ngModel" (closed)="getdate(f)" (closed)="checkAgeNot85(f)" required>
                                 <mat-option *ngFor="let period of periods" [value]="period">
-                                {{period}} <span *ngIf="period > 10">{{ 'traveler.day' | translate }}</span>
-                                <span *ngIf="period <= 10">{{ 'traveler.days' | translate }}</span>
+                                    {{period}} <span *ngIf="period > 10">{{ 'traveler.day' | translate }}</span>
+                                    <span *ngIf="period <= 10">{{ 'traveler.days' | translate }}</span>
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -102,7 +112,8 @@
 
                             <input type="text" readonly matInput [matDatepicker]="picker1" name="dateTill" #inputTill [(ngModel)]="newDate" #dateTill="ngModel" required [min]="dateWhen.value">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker (closed)="inputTill.blur()" disabled #picker1 [startAt]="newDate" #picker1></mat-datepicker>
+                            <mat-datepicker (closed)="inputTill.blur()" disabled #picker1 [startAt]="newDate" #picker1>
+                            </mat-datepicker>
 
 
                         </mat-form-field>
@@ -113,9 +124,22 @@
 
                 <p *ngIf="isNotMore85 !== true" class="custom-error">{{ 'traveler.err85' | translate }}</p>
                 <p *ngIf="isFamly">{{'traveler.familyMean'| translate}}</p>
-                <mat-checkbox color="primary" ngModel #checkbox name="egyptian" [checked]="isEgyption" (change)="isEgyption = !isEgyption">{{ 'traveler.alert' | translate }}</mat-checkbox>
+                <div [ngClass]="{'radioFloat': this.lang =='en', 'ar_radioFloat': this.lang == 'ar'}">
+                    <mat-checkbox color="primary" ngModel #checkbox name="egyptian" [checked]="isEgyption" (change)="isEgyption = !isEgyption">{{ 'traveler.alert' | translate }}</mat-checkbox>
+                </div>
+                <!-- <div [ngClass]="{'radioMargin': this.lang =='en', 'ar_radioMargin': this.lang == 'ar'}">
+                    <h3 style="margin-top: 0px;">{{ 'personal.product' | translate }}</h3>
+                    <div *ngIf="!isShow" fxLayoutAlign="center center">
+                        <mat-spinner [diameter]="40"></mat-spinner>
+                    </div>
+                    <ng-container *ngIf="isShow">
+                        <div *ngFor="let product of products">
+                            <mat-checkbox [value]="product.id" class="example-margin" (change)="specialCoversChange($event)">{{product.cover}}</mat-checkbox>
+                        </div>
+                    </ng-container>
+                </div> -->
                 <br><br>
-                <div *ngIf="f.invalid" ></div>
+                <div *ngIf="f.invalid"></div>
                 <button *ngIf="!isLoading" class='button-quote' mat-button color="primary" type="submit" [disabled]="f.invalid || isEgyption !== true || isNotMore85 !== true">{{ 'traveler.get_quote' | translate }}</button>
                 <div *ngIf="isLoading" fxLayoutAlign="center center">
                     <mat-spinner [diameter]="40"></mat-spinner>

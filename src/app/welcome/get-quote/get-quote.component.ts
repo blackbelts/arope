@@ -13,7 +13,7 @@ import { OdooService } from '../../shared/odoo.service';
 
 // FORMATE DATE
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
-import { AppDateAdapter, APP_DATE_FORMATS} from '../../date.adapter';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../date.adapter';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { HttpClient } from '@angular/common/http';
 
@@ -27,7 +27,7 @@ import { HttpClient } from '@angular/common/http';
       provide: DateAdapter, useClass: AppDateAdapter
     },
     {
-        provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+      provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
     }
   ]
 })
@@ -55,19 +55,20 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
   newDate;
   breakpoint2;
   indiMaxDate;
+  isShow = false;
   formFields = {
-    typeTraveler : 'individual',
+    product: '',
+    typeTraveler: 'individual',
     dates: '',
     zone: '',
     date: '',
     when: '',
+    covid: false,
     till: ''
   };
-
-
-
-
-
+  // special_covers = [];
+  products = [];
+  // special_covers_ids = [];
 
   // @Output() change: EventEmitter<MatRadioChange>;
   constructor(
@@ -80,7 +81,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
     private dateAdapter: DateAdapter<Date>,
     private site_settings: SiteSettingsService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -90,12 +91,59 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       this.dateAdapter.setLocale('ar');
     }
     // get query params
-    const data = {paramlist: { data: [] } };
+    const data = { paramlist: { data: [] } };
     this.odoo.call_odoo_function(
-    'travel.front', 'get_periods', data ).subscribe(res => {
-      this.periods = res;
-      console.log('periods', res);
-    });
+      'travel.front', 'get_periods', data).subscribe(res => {
+        this.periods = res;
+        console.log('periods', res);
+      });
+    // this.odoo.call_odoo_function(
+    //   'insurance.product', 'search_read', { paramlist: { filter: ["&", ["active_online", "=", "true"], ["special_covers", "=", "true"]] } }).subscribe(res => {
+    //     let lang = localStorage.getItem('lang')
+    //     this.isShow = true
+    //     console.log(lang)
+    //     res.forEach(cover => {
+    //       if (lang == 'ar') {
+    //         this.special_covers.push({
+    //           id: cover.id,
+    //           cover: cover.ar_cover,
+    //           limit: cover.ar_limit,
+    //           cover_rate: cover.cover_rate,
+    //           active_online: cover.active_online,
+    //           special_covers: cover.special_covers
+    //         });
+    //       } else if (lang == 'en') {
+    //         this.special_covers.push({
+    //           id: cover.id,
+    //           cover: cover.cover,
+    //           limit: cover.limit,
+    //           cover_rate: cover.cover_rate,
+    //           active_online: cover.active_online,
+    //           special_covers: cover.special_covers
+    //         });
+    //       }
+    //     });
+    //     console.log('search_read', this.special_covers);
+    //   });
+    this.odoo.call_odoo_function(
+      'insurance.product', 'search_read', { paramlist: { filter: ["&", ["active_online", "=", "true"], ["line_of_bus.line_of_business", "=", "Travel"]] } }).subscribe(res => {
+        const lang = localStorage.getItem('lang');
+        this.isShow = true;
+        console.log(lang);
+        res.forEach(product => {
+          if (lang === 'ar') {
+            this.products.push({
+              id: product.id,
+              name: product.ar_product_name,
+            });
+          } else if (lang === 'en') {
+            this.products.push({
+              id: product.id,
+              name: product.product_name,
+            });
+          }
+        });
+      });
     this.route.queryParamMap.subscribe(paramMap => {
       if (!paramMap.has('type')) {
         return;
@@ -136,9 +184,6 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
 
     this.countries = this.welcomeService.getAllCountries();
   }
-
-
-
   onResize(event) {
 
     this.breakpoint = event.target.innerWidth <= 700 ? 1 : 2;
@@ -149,7 +194,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
   showPopup() {
     console.log(this.familyDataString);
     const dialogRef = this.dialog.open(AgeTravelerComponent, {
-      data : {
+      data: {
         datesList: this.familyDataString
       },
 
@@ -175,7 +220,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
   showGrpupPopup() {
     console.log(this.groupData);
     const dialogRef = this.dialog.open(GroupAgeComponent, {
-      data : {
+      data: {
         sizesList: this.groupData
       },
 
@@ -222,10 +267,10 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       year = d.getFullYear();
 
     if (month.length < 2) {
-        month = '0' + month;
+      month = '0' + month;
     }
     if (day.length < 2) {
-        day = '0' + day;
+      day = '0' + day;
     }
 
     return [year, month, day].join('-');
@@ -238,10 +283,10 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       year = d.getFullYear();
 
     if (month.length < 2) {
-        month = '0' + month;
+      month = '0' + month;
     }
     if (day.length < 2) {
-        day = '0' + day;
+      day = '0' + day;
     }
 
     return [day, month, year].join('/');
@@ -257,14 +302,24 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       let i = 1;
       for (const val of list) {
         if (val === 'kid') {
-              const list2 = object.dates['date-' + i];
-              data.push(list2);
-            }
-        i ++;
+          const list2 = object.dates['date-' + i];
+          data.push(list2);
         }
+        i++;
+      }
       // console.log(data);
-      const familyData = {paramlist: {data: {z: form.value.zone, p_from: when,
-      p_to: till, kid_dob: data}}};
+      const familyData = {
+        paramlist: {
+          data: {
+            product: form.value.product,
+            z: form.value.zone,
+            p_from: when,
+            p_to: till,
+            kid_dob: data,
+            // s_covers: this.special_covers_ids
+          }
+        }
+      };
       // const oldfamilyData = {paramlist: {zone: {z: form.value.zone}, whens: {p_from: when},
       //  tills: {p_to: till}, ages: {kid_dob: data} }};
       this.saveDataInLocalStorage(form).then(res =>
@@ -272,8 +327,19 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       );
     } else if (form.value.type === 'individual') {
       const age = this.convertDate(form.value.indAge);
-      const data = {paramlist: {data: {z: form.value.zone, d: [age],
-      p_from: when, p_to: till}}};
+      localStorage.setItem('dob_covers', age);
+      const data = {
+        paramlist: {
+          data: {
+            product: form.value.product,
+            z: form.value.zone,
+            d: [age],
+            p_from: when,
+            p_to: till,
+            // s_covers: this.special_covers_ids
+          }
+        }
+      };
       // const olddata = {paramlist: {zone: {z: form.value.zone}, ages: {d: [age]},
       //  whens: {p_from: when}, tills: {p_to: till} }};
       this.saveDataInLocalStorage(form).then(res =>
@@ -286,12 +352,22 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       // const listAges = Object.values(object.ranges);
       let i = 0;
       for (const val of listSizes) {
-        const list2 = {size: Number(object.sizes['size-' + i]), age: object.ranges['range-' + i]};
+        const list2 = { size: Number(object.sizes['size-' + i]), age: object.ranges['range-' + i] };
         groups.push(list2);
-        i ++;
+        i++;
       }
-      const data = {paramlist: {data: {zone: form.value.zone, p_from: when, p_to: till,
-      group: groups}}};
+      const data = {
+        paramlist: {
+          data: {
+            product: form.value.product,
+            zone: form.value.zone,
+            p_from: when,
+            p_to: till,
+            group: groups,
+            // s_covers: this.special_covers_ids
+          }
+        }
+      };
       // this.saveDataInLocalStorage(form);
       // this.odoo.call_odoo_function('odoo', 'online', 'online', 'policy.travel',
       // 'get_group', data).subscribe(res => {
@@ -299,26 +375,26 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       // });
 
       this.odoo.call_odoo_function('policy.travel',
-      'get_group', data).subscribe(res => {
-        const x = res.gross;
-        this.uiService.loadPriceTotal.next( parseInt(x.toString(), 10) );
-        localStorage.setItem('total_price', parseInt(x.toString(), 10).toString());
-        const groubLocal = JSON.stringify(groups);
-        localStorage.setItem('groupMembers', groubLocal);
-        localStorage.setItem('groupDetails', groubLocal);
-        this.priceValue = res;
-        this.uiService.loadingChangedStatus.next(false);
-        this.router.navigate(['/', 'traveler-insurance', 'group-travel']);
-     }, error => this.welcomeService.handleError(error.statusText));
+        'get_group', data).subscribe(res => {
+          const x = res.gross;
+          this.uiService.loadPriceTotal.next(parseInt(x.toString(), 10));
+          localStorage.setItem('total_price', parseInt(x.toString(), 10).toString());
+          const groubLocal = JSON.stringify(groups);
+          localStorage.setItem('groupMembers', groubLocal);
+          localStorage.setItem('groupDetails', groubLocal);
+          this.priceValue = res;
+          this.uiService.loadingChangedStatus.next(false);
+          this.router.navigate(['/', 'traveler-insurance', 'group-travel']);
+        }, error => this.welcomeService.handleError(error.statusText));
     }
   }
 
   typeAges(type: string, ageArgs) {
     if (type === 'individual') {
       return [this.convertDate(ageArgs)];
-   } else {
+    } else {
       return ageArgs.split(', ');
-   }
+    }
   }
 
   saveDataInLocalStorage(form) {
@@ -327,13 +403,15 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       console.log(form);
 
       localStorage.setItem('zone', form.value.zone);
+      localStorage.setItem('product', form.value.product);
       localStorage.setItem('period', form.value.period);
+      // localStorage.setItem('s_covers', this.special_covers_ids.toString())
       let ageArgs;
       const type = form.value.type;
       let valArgLength = 0;
       if (type === 'individual') {
         ageArgs = form.value.indAge;
-        valArgLength = this.typeAges(type, ageArgs).length ;
+        valArgLength = this.typeAges(type, ageArgs).length;
         localStorage.setItem('date', this.convertDate(form.value.indAge));
       } else {
         ageArgs = form.value.familyAges;
@@ -361,12 +439,12 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
   }
 
   getAge(dateString) {
-    const data = {paramlist: {age: [dateString]}};
+    const data = { paramlist: { age: [dateString] } };
     this.odoo.call_odoo_function('policy.travel',
-    'calculate_age', data).subscribe(res => {
-      const age = res[0];
-      localStorage.setItem('age', age.toString());
-    });
+      'calculate_age', data).subscribe(res => {
+        const age = res[0];
+        localStorage.setItem('age', age.toString());
+      });
   }
 
   ngOnDestroy() {
@@ -423,7 +501,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
         yearAge--;
         let monthAge = 12 + monthNow - monthDob;
         if (dateNow >= dateDob) {
-           dateAge = dateNow - dateDob;
+          dateAge = dateNow - dateDob;
         } else {
           monthAge--;
           dateAge = 31 + dateNow - dateDob;
@@ -436,7 +514,7 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
 
     }
 
-    if (yearAge < 85 || yearAge === 85 && dateAge === 0 ) {
+    if (yearAge < 85 || yearAge === 85 && dateAge === 0) {
       this.isNotMore85 = true;
 
     } else {
@@ -445,5 +523,15 @@ export class GetQuoteComponent implements OnInit, OnDestroy {
       const key = 'date-0';
     }
   }
+  // specialCoversChange(event) {
+  //   if (event.checked)
+  //     this.special_covers_ids.push(event.source.value)
+  //   else {
+  //     console.log("index", this.special_covers_ids.indexOf(event.source.value))
+  //     this.special_covers_ids.splice(this.special_covers_ids.indexOf(event.source.value), 1)
+  //   }
+
+  //   console.log(this.special_covers_ids)
+  // }
 }
 

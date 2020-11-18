@@ -3,7 +3,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { UIService } from '../shared/ui.services';
 import { OdooService } from '../shared/odoo.service';
-import { PaymentModel } from  './payment.model';
+import { PaymentModel } from './payment.model';
 @Injectable()
 export class TravelerService {
   listBenfilts = [];
@@ -24,17 +24,17 @@ export class TravelerService {
   }
 
   getJSessionId() {
-      const jsId = document.cookie.match(/JSESSIONID=[^;]+/);
-      let dd;
-      if (jsId != null) {
-          if (jsId instanceof Array) {
-              dd = jsId[0].substring(11);
-            } else {
-              dd = String(jsId).substring(11);
-            }
+    const jsId = document.cookie.match(/JSESSIONID=[^;]+/);
+    let dd;
+    if (jsId != null) {
+      if (jsId instanceof Array) {
+        dd = jsId[0].substring(11);
+      } else {
+        dd = String(jsId).substring(11);
       }
+    }
 
-      return dd;
+    return dd;
   }
 
   getInfoTraveller() {
@@ -60,22 +60,22 @@ export class TravelerService {
     const condition = info.data.condition;
 
     return {
-        phone,
-        full_name,
-        mail,
-        address,
-        total_price,
-        package: 'your package: ' + type,
-        first_name,
-        middle_name,
-        last_name,
-        gender,
-        id,
-        national,
-        Passport,
-        confirm,
-        chk,
-        condition
+      phone,
+      full_name,
+      mail,
+      address,
+      total_price,
+      package: 'your package: ' + type,
+      first_name,
+      middle_name,
+      last_name,
+      gender,
+      id,
+      national,
+      Passport,
+      confirm,
+      chk,
+      condition
     };
 
   }
@@ -105,26 +105,26 @@ export class TravelerService {
     const elig_bool = info.data.elig_bool;
     let othere;
     if (info.data.othere) {
-      console.log('type of othere ', typeof( info.data.othere));
+      console.log('type of othere ', typeof (info.data.othere));
       othere = Object.values(info.data.othere);
     }
     return {
-        phone,
-        full_name,
-        mail,
-        address,
-        national,
-        city,
-        total_price,
-        package: 'your package: ' + type,
-        first_name,
-        middle_name,
-        last_name,
-        gender,
-        id,
-        othere,
-        after_die: elig_bool,
-        language: lang
+      phone,
+      full_name,
+      mail,
+      address,
+      national,
+      city,
+      total_price,
+      package: 'your package: ' + type,
+      first_name,
+      middle_name,
+      last_name,
+      gender,
+      id,
+      othere,
+      after_die: elig_bool,
+      language: lang
     };
 
   }
@@ -154,76 +154,99 @@ export class TravelerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
-
-    if (this.lang === 'en') {
-      const data = {paramlist: {filter: [],
-        need: []}};
-      this.odoo.call_odoo_function(
-      'travel.benefits', 'search_read', data).subscribe(res => {
+    const data = {
+        paramlist: {
+          data: {'type': localStorage.getItem('type'), 'product_id': Number(localStorage.getItem('product')), 'zone': localStorage.getItem('zone'), 'd': [localStorage.getItem('dob_covers')]}
+        }
+      };
+    this.odoo.call_odoo_function( 'travel.front', 'get_covers', data).subscribe(res => {
         for (const x in res) {
-          const cover = res[x].cover;
-          const limit = res[x].limit;
+          if (this.lang === 'en') {
+            const cover = res[x].cover;
+            const limit = res[x].limit;
+            if (cover !== false) {
+              this.listBenfilts.push({
+                cover,
+                limit
+              });
+            }
+         } else {
+          const cover = res[x].ar_cover;
+          const limit = res[x].ar_limit;
           if (cover !== false) {
             this.listBenfilts.push({
               cover,
               limit
             });
           }
-        }
-
-        this.loadListBenefits.next(this.listBenfilts);
-        this.uiService.loadingChangedStatus.next(false);
-      });
-    } else {
-      const data = {paramlist: {filter: [],
-        need: ['ar_cover', 'ar_limit']}};
-      this.odoo.call_odoo_function(
-      'travel.benefits', 'search_read', data).subscribe(res => {
-
-        for (const x in res) {
-          res[x].cover = res[x].ar_cover;
-          delete res[x].ar_cover;
-          res[x].limit = res[x].ar_limit;
-          delete res[x].ar_limit;
-          const cover = res[x].cover;
-          const limit = res[x].limit;
-          if (cover !== false) {
-            this.listBenfilts.push({
-              cover,
-              limit
-            });
          }
         }
 
         this.loadListBenefits.next(this.listBenfilts);
         this.uiService.loadingChangedStatus.next(false);
       });
-    }
+    // } else {
+    //   const data = {
+    //     paramlist: {
+    //       filter: ["|", ["special_covers", "=", false], ["id", "in", s_covers]],
+    //       need: ['ar_cover', 'ar_limit']
+    //     }
+    //   };
+    //   this.odoo.call_odoo_function(
+    //     'travel.benefits', 'search_read', data).subscribe(res => {
+
+    //       for (const x in res) {
+    //         res[x].cover = res[x].ar_cover;
+    //         delete res[x].ar_cover;
+    //         res[x].limit = res[x].ar_limit;
+    //         delete res[x].ar_limit;
+    //         const cover = res[x].cover;
+    //         const limit = res[x].limit;
+    //         if (cover !== false) {
+    //           this.listBenfilts.push({
+    //             cover,
+    //             limit
+    //           });
+    //         }
+    //       }
+
+    //       this.loadListBenefits.next(this.listBenfilts);
+    //       this.uiService.loadingChangedStatus.next(false);
+    //     });
+    // }
   }
 
   fetchExcess() {
     this.uiService.loadingChangedStatus.next(true);
 
     if (this.lang === 'en') {
-      const data = {paramlist: {filter: [],
-        need: []}};
-      this.odoo.call_odoo_function(
-      'travel.excess', 'search_read', data).subscribe(res => {
-        this.loadResObjExcess.next(res);
-        this.uiService.loadingChangedStatus.next(false);
-      });
-    } else {
-      const data = {paramlist: {filter: [],
-        need: ['ar_rule', 'amount']}};
-      this.odoo.call_odoo_function(
-      'travel.excess', 'search_read', data).subscribe(res => {
-        for (const x of res) {
-          x.rule = x.ar_rule;
-          delete x.ar_rule;
+      const data = {
+        paramlist: {
+          filter: [],
+          need: []
         }
-        this.loadResObjExcess.next(res);
-        this.uiService.loadingChangedStatus.next(false);
-      });
+      };
+      this.odoo.call_odoo_function(
+        'travel.excess', 'search_read', data).subscribe(res => {
+          this.loadResObjExcess.next(res);
+          this.uiService.loadingChangedStatus.next(false);
+        });
+    } else {
+      const data = {
+        paramlist: {
+          filter: [],
+          need: ['ar_rule', 'amount']
+        }
+      };
+      this.odoo.call_odoo_function(
+        'travel.excess', 'search_read', data).subscribe(res => {
+          for (const x of res) {
+            x.rule = x.ar_rule;
+            delete x.ar_rule;
+          }
+          this.loadResObjExcess.next(res);
+          this.uiService.loadingChangedStatus.next(false);
+        });
     }
   }
 
