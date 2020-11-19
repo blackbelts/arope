@@ -11,7 +11,7 @@ export class OdooService {
     data = JSON.stringify(data);
     const nwData = {paramlist: data};
     const port = 8069;
-    const odooUrl = 'http://3.249.109.211:4000/call_method' + '/' + modelName + '/' + functionName;
+    const odooUrl = 'https://3.249.109.211:4000/call_method' + '/' + modelName + '/' + functionName;
     console.log('ay kalam 5');
     return this.http.post(odooUrl, nwData);
   }

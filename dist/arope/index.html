@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Arope</title>
-  <base href="http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/">  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Arope</title>
+    <base href="http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/">    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css" rel="stylesheet">
 
-  <!--    <script id="myscript" src="https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js" 
+    <!--    <script id="myscript" src="https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js" 
     data-cancel="cancelCallback" 
     data-error="errorCallback"
     data-complete="completeCallback"
@@ -18,62 +18,68 @@
     >
     </script> -->
 
-  <script src="https://atfawry.fawrystaging.com/ECommercePlugin/scripts/FawryPay.js"></script>
-  <!-- <script id="myscript" src="https://test-gateway.mastercard.com/checkout/version/39/checkout.js" 
+    <script src="https://atfawry.fawrystaging.com/ECommercePlugin/scripts/FawryPay.js"></script>
+    <!-- <script id="myscript" src="https://test-gateway.mastercard.com/checkout/version/39/checkout.js" 
     data-cancel="cancelCallback" 
     data-error="errorCallback"
    
     >
     </script> -->
-  <script>
-    function cancelCallback() {
-      console.log('Payment cancelled');
-    }
+    <script>
+        function cancelCallback() {
+            console.log('Payment cancelled');
+        }
 
-    function errorCallback(error) {
-      alert('The Operation couldn\'t be complated');
-      console.log(JSON.stringify(error));
-    }
+        function errorCallback(error) {
+            alert('The Operation couldn\'t be complated');
+            console.log(JSON.stringify(error));
+        }
 
-    function timeoutCallback() {
-      alert('Network Error : No Data Received.');
-    }
+        function timeoutCallback() {
+            alert('Network Error : No Data Received.');
+        }
 
-    function completeCallback() {
-      // fetch('http://207.154.195.214:4000/complete/travel/test')
-      // .then(response => response.json())
-      // .then(data => console.log(data));
-      const key = JSON.parse(localStorage.getItem('formData')).key;
-      if (key == 'travel') {
+        function completeCallback() {
+            // fetch('http://207.154.195.214:4000/complete/travel/test')
+            // .then(response => response.json())
+            // .then(data => console.log(data));
+            const key = JSON.parse(localStorage.getItem('formData')).key;
+            if (key == 'travel') {
 
-        window.location.replace(
-          'http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/traveler-insurance/traveler-info?step=thankyou');
-      } else {
-        window.location.replace(
-          'http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/personal-accident/personal-result?step=thankyou'
-          );
-      }
-    }
+                window.location.replace(
+                    'http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/traveler-insurance/traveler-info?step=thankyou');
+            } else {
+                window.location.replace(
+                    'http://arp-alb-773417538.eu-west-1.elb.amazonaws.com/arope/personal-accident/personal-result?step=thankyou'
+                );
+            }
+        }
+    </script>
+    <script>
+        if (global === undefined) {
+            var global = window;
+        }
+    </script>
+    <script>
+        if (window.location.protocol.indexOf('https') == 0) {
+            var el = document.createElement('meta')
+            el.setAttribute('http-equiv', 'Content-Security-Policy')
+            el.setAttribute('content', 'upgrade-insecure-requests')
+            document.head.append(el)
+        }
+    </script>
 
-  </script>
-  <script>
-    if (global === undefined) {
-      var global = window;
-    }
+    <!-- <link rel="stylesheet" href="http://207.154.195.214:8070/im_livechat/external_lib.css"/> -->
 
-  </script>
-
-  <!-- <link rel="stylesheet" href="http://207.154.195.214:8070/im_livechat/external_lib.css"/> -->
-
-  <!-- <script src="https://qnbalahli.test.gateway.mastercard.com/checkout/version/49/checkout.js" data-error="errorCallback" data-cancel="cancelCallback"> -->
-  <!-- </script> -->
+    <!-- <script src="https://qnbalahli.test.gateway.mastercard.com/checkout/version/49/checkout.js" data-error="errorCallback" data-cancel="cancelCallback"> -->
+    <!-- </script> -->
 
 <link rel="stylesheet" href="styles.e43b6360cd28e65f2585.css"></head>
 
 <body>
-  <app-root></app-root>
-  <!-- <script type="text/javascript" src="http://207.154.195.214:8070/im_livechat/external_lib.js"></script>
+    <app-root></app-root>
+    <!-- <script type="text/javascript" src="http://207.154.195.214:8070/im_livechat/external_lib.js"></script>
     <script type="text/javascript" src="http://207.154.195.214:8070/im_livechat/loader/1"></script> -->
-<script src="runtime-es2015.c5fa8325f89fc516600b.js" type="module"></script><script src="runtime-es5.c5fa8325f89fc516600b.js" nomodule defer></script><script src="polyfills-es5.3e8196928d184a6e5319.js" nomodule defer></script><script src="polyfills-es2015.5b10b8fd823b6392f1fd.js" type="module"></script><script src="main-es2015.3eae7374673efd8d82a5.js" type="module"></script><script src="main-es5.3eae7374673efd8d82a5.js" nomodule defer></script></body>
+<script src="runtime-es2015.c5fa8325f89fc516600b.js" type="module"></script><script src="runtime-es5.c5fa8325f89fc516600b.js" nomodule defer></script><script src="polyfills-es5.3e8196928d184a6e5319.js" nomodule defer></script><script src="polyfills-es2015.5b10b8fd823b6392f1fd.js" type="module"></script><script src="main-es2015.059862a0f8f656913288.js" type="module"></script><script src="main-es5.059862a0f8f656913288.js" nomodule defer></script></body>
 
 </html>
