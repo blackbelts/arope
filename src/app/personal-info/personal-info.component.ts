@@ -117,7 +117,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     after_die: 'true',
     language: ''
   };
-  payment_method
+  payment_method;
   chkOther = false;
   qnbConfig;
   breakpoint: number;
@@ -167,7 +167,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
             'personal.front', 'create_policy', data).subscribe(res => {
               console.log(res);
               this.uiService.loadResId.next(res[1]);
-              this.http.get('http://3.249.109.211:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+              this.http.get('http://online.aropeegypt.com.eg:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
                 console.log(res);
                 saveAs(res, `Policy (AROPE).pdf`);
                 this.downloadTerms('http://207.154.195.214/PA_General_Conditions.pdf');
@@ -201,32 +201,34 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   }
   paymentChange(event) {
     if (event.value !== "fawry") {
-      this.isLoading = true
-      let paymentScript = document.querySelector("#payment");
-      let iframe = document.querySelector("iframe");
-      if (paymentScript != null)
+      this.isLoading = true;
+      const paymentScript = document.querySelector("#payment");
+      const iframe = document.querySelector("iframe");
+      if (paymentScript != null) {
         paymentScript.remove();
-      if (iframe != null)
-        iframe.remove()
+      }
+      if (iframe != null) {
+        iframe.remove();
+      }
       const script = document.createElement("script");
-      script.id = "payment"
+      script.id = "payment";
       if (event.value === 'qnb') {
         script.src = 'https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js';
       } else if (event.value === 'nbe') {
         script.src = 'https://nbe.gateway.mastercard.com/checkout/version/57/checkout.js';
       }
-      script.setAttribute("data-cancel", "cancelCallback")
-      script.setAttribute("data-error", "errorCallback")
-      script.setAttribute("data-complete", "completeCallback")
+      script.setAttribute("data-cancel", "cancelCallback");
+      script.setAttribute("data-error", "errorCallback");
+      script.setAttribute("data-complete", "completeCallback");
       script.type = 'text/javascript';
       document.head.appendChild(script);
       script.onload = (event) => {
         this.isLoading = false;
-        //this.initQnpConfig();
-        console.log("loadddddddddddddddd")
-        console.log(event)
+        // this.initQnpConfig();
+        console.log("loadddddddddddddddd");
+        console.log(event);
 
-      }
+      };
 
       // Set script src depend on condition
 
@@ -325,7 +327,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
       }
 
     });
-    this.payment_method = payment_method
+    this.payment_method = payment_method;
 
     if (payment_method === 'fawry') {
       const returnData = this.faweryService.faweryConfig();
@@ -432,17 +434,16 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
         }
       }
     }
-    let merchant = ""
-    if (this.payment_method == "nbe") {
-      merchant = "TESTNBETEST"
+    let merchant = "";
+    if (this.payment_method === "nbe") {
+      merchant = "TESTNBETEST";
+    } else if (this.payment_method === "qnb") {
+      merchant = "TESTQNBAATEST001";
     }
-    else if (this.payment_method == "qnb") {
-      merchant = "TESTQNBAATEST001"
-    }
-    console.log(merchant)
+    console.log(merchant);
     // qnp config
     this.qnbConfig = {
-      merchant: merchant,
+      merchant,
       session: {
         id: sessionIDLocalStorage
       },

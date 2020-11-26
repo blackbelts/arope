@@ -109,7 +109,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
     chk: false,
     condition: false
   };
-  payment_method
+  payment_method;
   matcher = new MyErrorStateMatcher();
   @Output() changeStatus = new EventEmitter();
   qnbConfig;
@@ -134,14 +134,14 @@ export class InfoComponent implements OnInit, AfterViewInit {
         localStorage.setItem('stepper', 'true');
         this.changeStatus.emit(true);
         const formData = JSON.parse(localStorage.getItem('formData'));
-        let s_covers = []
-        if (localStorage.getItem("s_covers") != "") {
-          s_covers = localStorage.getItem("s_covers").split(",")
-          s_covers.forEach((cover, index) => {
-            s_covers[index] = parseInt(cover)
-          })
-        }
-        formData.data.s_covers=s_covers
+        // let s_covers = [];
+        // if (localStorage.getItem("s_covers") !== "") {
+        //   s_covers = localStorage.getItem("s_covers").split(",");
+        //   s_covers.forEach((cover, index) => {
+        //     s_covers[index] = parseInt(cover);
+        //   });
+        // }
+        // formData.data.s_covers = s_covers;
         const data = { paramlist: { data: formData.data } };
         console.log('data', data);
         if (formData.key === 'travel') {
@@ -161,7 +161,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
               // this.testDownload();
 
               // download file
-              this.http.get('http://3.249.109.211:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+              this.http.get('http://online.aropeegypt.com.eg:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
                 console.log(res);
                 saveAs(res, `Policy (AROPE).pdf`);
                 // return this.http.get('http://207.154.195.214:8070/Terms/');
@@ -242,18 +242,17 @@ export class InfoComponent implements OnInit, AfterViewInit {
     if (data_traveler) {
       this.data_info = this.travelerService.getInfoTraveller();
     }
-    let merchant = ""
-    if (this.payment_method == "nbe") {
-      merchant = "TESTNBETEST"
+    let merchant = "";
+    if (this.payment_method === "nbe") {
+      merchant = "TESTNBETEST";
+    } else if (this.payment_method === "qnb") {
+      merchant = "TESTQNBAATEST001";
     }
-    else if (this.payment_method == "qnb") {
-      merchant = "TESTQNBAATEST001"
-    }
-    console.log(merchant)
+    console.log(merchant);
     this.national = this.data_info.national;
     // qnp config
     this.qnbConfig = {
-      merchant: merchant,
+      merchant,
       session: {
         id: sessionIDLocalStorage
       },
@@ -326,6 +325,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
     const age = this.setting.convertDate(form.value.dateBirth);
     const when = this.setting.convertDate(localStorage.getItem('when'));
     const till = this.setting.convertDate(localStorage.getItem('till'));
+    const prod = Number(localStorage.getItem('product'));
 
     const fullName = this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName);
     localStorage.setItem('fullName', fullName);
@@ -361,7 +361,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
         paramlist: {
           data: {
             z: localStorage.getItem('zone'), d: [age],
-            p_from: when, p_to: till
+            p_from: when, p_to: till, product : prod
           }
         }
       };
@@ -419,7 +419,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
         paramlist: {
           data: {
             z: localStorage.getItem('zone'), p_from: when,
-            p_to: till, kid_dob: kidAges
+            p_to: till, kid_dob: kidAges, product : prod
           }
         }
       };
@@ -466,32 +466,34 @@ export class InfoComponent implements OnInit, AfterViewInit {
 
   paymentChange(event) {
     if (event.value !== "fawry") {
-      this.isLoading = true
-      let paymentScript = document.querySelector("#payment");
-      let iframe = document.querySelector("iframe");
-      if (paymentScript != null)
+      this.isLoading = true;
+      const paymentScript = document.querySelector("#payment");
+      const iframe = document.querySelector("iframe");
+      if (paymentScript != null) {
         paymentScript.remove();
-      if (iframe != null)
-        iframe.remove()
+      }
+      if (iframe != null) {
+        iframe.remove();
+      }
       const script = document.createElement("script");
-      script.id = "payment"
+      script.id = "payment";
       if (event.value === 'qnb') {
         script.src = 'https://qnbalahli.test.gateway.mastercard.com/checkout/version/43/checkout.js';
       } else if (event.value === 'nbe') {
         script.src = 'https://nbe.gateway.mastercard.com/checkout/version/57/checkout.js';
       }
-      script.setAttribute("data-cancel", "cancelCallback")
-      script.setAttribute("data-error", "errorCallback")
-      script.setAttribute("data-complete", "completeCallback")
+      script.setAttribute("data-cancel", "cancelCallback");
+      script.setAttribute("data-error", "errorCallback");
+      script.setAttribute("data-complete", "completeCallback");
       script.type = 'text/javascript';
       document.head.appendChild(script);
       script.onload = (event) => {
         this.isLoading = false;
-        //this.initQnpConfig();
-        console.log("loadddddddddddddddd")
-        console.log(event)
+        // this.initQnpConfig();
+        console.log("loadddddddddddddddd");
+        console.log(event);
 
-      }
+      };
 
       // Set script src depend on condition
 
@@ -522,7 +524,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
         Checkout.showLightbox();
       }
     });
-    this.payment_method = payment_method
+    this.payment_method = payment_method;
 
     if (payment_method === 'fawry') {
       const returnData = this.faweyService.faweryConfig();

@@ -54,14 +54,14 @@ export class PriceCardPaymentComponent implements OnInit {
     if (form.valid) {
       console.log('ayyy');
       const formData = JSON.parse(localStorage.getItem('formData'));
-      let s_covers = []
-      if (localStorage.getItem("s_covers") != "") {
-        s_covers = localStorage.getItem("s_covers").split(",")
-        s_covers.forEach((cover, index) => {
-          s_covers[index] = parseInt(cover)
-        })
-      }
-      formData.data.s_covers=s_covers
+      // let s_covers = []
+      // if (localStorage.getItem("s_covers") != "") {
+      //   s_covers = localStorage.getItem("s_covers").split(",")
+      //   s_covers.forEach((cover, index) => {
+      //     s_covers[index] = parseInt(cover)
+      //   })
+      // }
+      // formData.data.s_covers=s_covers
       const data = { paramlist: {data: formData.data} };
       console.log('data', data);
       if (formData.key === 'travel') {
@@ -80,7 +80,7 @@ export class PriceCardPaymentComponent implements OnInit {
             // this.testDownload();
 
             // download file
-            this.http.get('http://3.249.109.211:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+            this.http.get('http://online.aropeegypt.com.eg:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
               console.log(res);
               saveAs(res, `Policy (AROPE).pdf`);
               window.open('http://207.154.195.214/TravelWording_General_Conditions.pdf', '_blank');
@@ -96,7 +96,7 @@ export class PriceCardPaymentComponent implements OnInit {
           this.odoo.call_odoo_function(
           'personal.front', 'create_policy', data ).subscribe(res => {
             console.log(res);
-            this.http.get('http://3.249.109.211:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+            this.http.get('http://online.aropeegypt.com.eg:8069/report/personal/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
               console.log(res);
               saveAs(res, `Policy (AROPE).pdf`);
               this.downloadTerms('http://207.154.195.214/PA_General_Conditions.pdf');
@@ -118,7 +118,7 @@ export class PriceCardPaymentComponent implements OnInit {
   }
   testDownload() {
     // tslint:disable-next-line:max-line-length
-    this.http.get('http://3.249.109.211:8069/web/login?redirect=http%3A%2F%2F3.249.109.211%3A8070%2Freport%2Fpdf%2Fsmart_travel_agency.policy%2F54').subscribe(res => {
+    this.http.get('http://online.aropeegypt.com.eg:8069/web/login?redirect=http%3A%2F%2F3.249.109.211%3A8070%2Freport%2Fpdf%2Fsmart_travel_agency.policy%2F54').subscribe(res => {
     console.log('Downloaaad', res);
   });
   }

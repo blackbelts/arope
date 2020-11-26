@@ -10,7 +10,7 @@ export class PaymentService {
   constructor(private http: HttpClient, private odoo: OdooService) { }
 
   qnpGetSession(amount, paymentType) {
-    return this.http.get(`http://3.249.109.211:4000/get_session/${amount}/${paymentType}`);
+    return this.http.get(`http://online.aropeegypt.com.eg:4000/get_session/${amount}/${paymentType}`);
 
   }
 
@@ -47,7 +47,7 @@ export class PaymentService {
           // doc_id, numb er
 
           // download file
-          this.http.get('http://3.249.109.211:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
+          this.http.get('http://online.aropeegypt.com.eg:8069/report/' + res[0], { headers, responseType: 'blob' }).subscribe(res => {
             console.log(res);
             saveAs(res, `Policy (AROPE).pdf`);
             window.open('http://207.154.195.214/TravelWording_General_Conditions.pdf', '_blank');
