@@ -337,6 +337,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
       const formData = {
         data: {
           source: 'online',
+          product: localStorage.getItem('product'),
           package: localStorage.getItem('type'),
           c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
           add: form.value.address,
@@ -427,6 +428,7 @@ export class InfoComponent implements OnInit, AfterViewInit {
       const formData = {
         data: {
           source: 'online',
+          product: localStorage.getItem('product'),
           package: localStorage.getItem('type'),
           c_name: this.fullNameText(form.value.firstName, form.value.middleName, form.value.lastName),
           add: form.value.address,
